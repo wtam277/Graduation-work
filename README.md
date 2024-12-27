@@ -1,3 +1,9 @@
+![フロー解説 006](https://github.com/user-attachments/assets/39d8c98c-62f8-4429-a22c-00490ca4bacb)
+![フロー解説 005](https://github.com/user-attachments/assets/cd3d389d-4a67-4621-9b81-28cb237191c8)
+![フロー解説 004](https://github.com/user-attachments/assets/c35077c7-81b4-4131-8078-ec465588e5fa)
+![フロー解説 003](https://github.com/user-attachments/assets/d62e23bf-703b-4d98-8e4e-835c5d445421)
+![フロー解説 002](https://github.com/user-attachments/assets/55789744-c226-428a-83c4-24021f1a5127)
+![フロー解説 001](https://github.com/user-attachments/assets/171e46f1-dd66-437a-9f1f-df9a5845948a)
 # Graduation-work
 卒業制作
 
@@ -52,3 +58,6 @@
 ◾️機能の実装方針予定
 　・可能であれば、簡易ネームを画像出力して
 　　CRIP STUDIO（絵を描くアプリ）にそのまま画像貼り付けする機能をつけたい
+  ・入力フォーム
+  ・付箋メモアプリ
+  ・LINEのような感じでキャラクターが会話する
