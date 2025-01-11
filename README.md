@@ -59,3 +59,6 @@
     ・ransack（検索用）
     ・simple_form（入力フォーム）
     ・prawn（印刷用）
+
+
+     
