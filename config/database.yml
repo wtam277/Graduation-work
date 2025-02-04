@@ -23,6 +23,9 @@ default: &default
 development:
   <<: *default
   database: graduation_work_development
+  host: db
+  username: postgres      # docker-compose.yml で設定した POSTGRES_USER に合わせる
+  password: password      # docker-compose.yml で設定した POSTGRES_PASSWORD に合わせる
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
@@ -57,6 +60,9 @@ development:
 test:
   <<: *default
   database: graduation_work_test
+  host: db
+  username: postgres      # docker-compose.yml で設定した POSTGRES_USER に合わせる
+  password: password
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -81,5 +87,6 @@ test:
 production:
   <<: *default
   database: graduation_work_production
-  username: graduation_work
-  password: <%= ENV["GRADUATION_WORK_DATABASE_PASSWORD"] %>
+  host: db
+  username: postgres      # docker-compose.yml で設定した POSTGRES_USER に合わせる
+  password: password

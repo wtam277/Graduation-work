@@ -1,0 +1,315 @@
+time="2025-02-04T17:58:59+09:00" level=warning msg="/Users/takizawaayato/Graduation-work/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+ Service web  Building
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [web internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.25kB done
+#1 DONE 0.0s
+
+#2 [web] resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 0.7s
+
+#3 [web] docker-image://docker.io/docker/dockerfile:1@sha256:93bfd3b68c109427185cd78b4779fc82b484b0b7618e36d0f104d4d801e66d25
+#3 CACHED
+
+#4 [web internal] load metadata for docker.io/library/ruby:3.1.2-slim
+#4 DONE 0.6s
+
+#5 [web internal] load .dockerignore
+#5 transferring context: 896B done
+#5 DONE 0.0s
+
+#6 [web base 1/3] FROM docker.io/library/ruby:3.1.2-slim@sha256:5d413e301f37cbe63a54dadded2f347496165c1de0dbe342d1f0f0d47e25b2be
+#6 DONE 0.0s
+
+#7 [web internal] load build context
+#7 transferring context: 6.67kB 0.1s done
+#7 DONE 0.1s
+
+#8 [web base 2/3] WORKDIR /rails
+#8 CACHED
+
+#9 [web base 3/3] RUN apt-get update -qq &&     apt-get install --no-install-recommends -y curl libjemalloc2 libvips postgresql-client &&     rm -rf /var/lib/apt/lists /var/cache/apt/archives
+#9 CACHED
+
+#10 [web build 1/6] RUN apt-get update -qq &&     apt-get install --no-install-recommends -y build-essential git libpq-dev pkg-config &&     rm -rf /var/lib/apt/lists /var/cache/apt/archives
+#10 CACHED
+
+#11 [web build 2/6] COPY Gemfile Gemfile.lock ./
+#11 CACHED
+
+#12 [web build 3/6] RUN bundle install &&     rm -rf ~/.bundle/ "/usr/local/bundle"/ruby/*/cache "/usr/local/bundle"/ruby/*/bundler/gems/*/.git &&     bundle exec bootsnap precompile --gemfile
+#12 7.132 Fetching gem metadata from https://rubygems.org/.........
+#12 8.893 Fetching rake 13.2.1
+#12 8.979 Installing rake 13.2.1
+#12 9.000 Fetching base64 0.2.0
+#12 9.000 Fetching benchmark 0.4.0
+#12 9.001 Fetching bigdecimal 3.1.8
+#12 9.001 Fetching concurrent-ruby 1.3.5
+#12 9.002 Fetching connection_pool 2.4.1
+#12 9.002 Fetching drb 2.2.1
+#12 9.003 Fetching logger 1.6.1
+#12 9.003 Fetching minitest 5.25.4
+#12 9.046 Installing connection_pool 2.4.1
+#12 9.049 Fetching securerandom 0.3.1
+#12 9.072 Installing logger 1.6.1
+#12 9.075 Fetching builder 3.3.0
+#12 9.078 Installing benchmark 0.4.0
+#12 9.080 Installing drb 2.2.1
+#12 9.085 Fetching erubi 1.13.0
+#12 9.087 Fetching mini_portile2 2.8.8
+#12 9.095 Installing base64 0.2.0
+#12 9.098 Fetching racc 1.8.1
+#12 9.154 Installing bigdecimal 3.1.8 with native extensions
+#12 9.154 Installing minitest 5.25.4
+#12 9.181 Fetching crass 1.0.6
+#12 9.203 Installing erubi 1.13.0
+#12 9.204 Installing securerandom 0.3.1
+#12 9.210 Fetching rack 3.1.8
+#12 9.264 Fetching useragent 0.16.10
+#12 9.267 Installing mini_portile2 2.8.8
+#12 9.268 Installing builder 3.3.0
+#12 9.270 Installing racc 1.8.1 with native extensions
+#12 9.291 Fetching nio4r 2.7.3
+#12 9.302 Installing crass 1.0.6
+#12 9.305 Fetching websocket-extensions 0.1.5
+#12 9.308 Installing concurrent-ruby 1.3.5
+#12 9.315 Fetching zeitwerk 2.6.18
+#12 9.351 Installing useragent 0.16.10
+#12 9.357 Fetching timeout 0.4.1
+#12 9.361 Installing rack 3.1.8
+#12 9.369 Fetching marcel 1.0.4
+#12 9.375 Installing websocket-extensions 0.1.5
+#12 9.382 Fetching mini_mime 1.1.5
+#12 9.390 Fetching date 3.3.4
+#12 9.410 Installing nio4r 2.7.3 with native extensions
+#12 9.421 Installing zeitwerk 2.6.18
+#12 9.433 Fetching public_suffix 6.0.1
+#12 9.437 Installing timeout 0.4.1
+#12 9.439 Fetching ast 2.4.2
+#12 9.463 Installing marcel 1.0.4
+#12 9.469 Fetching msgpack 1.7.2
+#12 9.481 Installing mini_mime 1.1.5
+#12 9.487 Using bundler 2.3.7
+#12 9.488 Fetching matrix 0.4.2
+#12 9.524 Installing ast 2.4.2
+#12 9.527 Installing date 3.3.4 with native extensions
+#12 9.532 Fetching regexp_parser 2.9.2
+#12 9.553 Installing public_suffix 6.0.1
+#12 9.563 Fetching stringio 3.1.1
+#12 9.576 Installing msgpack 1.7.2 with native extensions
+#12 9.586 Installing matrix 0.4.2
+#12 9.591 Fetching io-console 0.7.2
+#12 9.600 Fetching webrick 1.8.1
+#12 9.616 Installing regexp_parser 2.9.2
+#12 9.631 Installing stringio 3.1.1 with native extensions
+#12 9.660 Installing io-console 0.7.2 with native extensions
+#12 9.673 Fetching thor 1.3.2
+#12 9.710 Installing webrick 1.8.1
+#12 9.727 Fetching json 2.7.2
+#12 9.749 Installing thor 1.3.2
+#12 9.759 Fetching language_server-protocol 3.17.0.3
+#12 9.813 Installing json 2.7.2 with native extensions
+#12 9.861 Installing language_server-protocol 3.17.0.3
+#12 9.925 Fetching parallel 1.26.3
+#12 9.993 Installing parallel 1.26.3
+#12 9.996 Fetching pg 1.5.9
+#12 10.12 Installing pg 1.5.9 with native extensions
+#12 10.39 Fetching rainbow 3.1.1
+#12 10.45 Installing rainbow 3.1.1
+#12 10.46 Fetching rexml 3.3.7
+#12 10.56 Installing rexml 3.3.7
+#12 10.58 Fetching ruby-progressbar 1.13.0
+#12 10.64 Installing ruby-progressbar 1.13.0
+#12 10.65 Fetching unicode-display_width 2.5.0
+#12 10.71 Installing unicode-display_width 2.5.0
+#12 10.71 Fetching rubyzip 2.3.2
+#12 10.79 Installing rubyzip 2.3.2
+#12 10.81 Fetching websocket 1.2.11
+#12 10.87 Installing websocket 1.2.11
+#12 10.91 Fetching i18n 1.14.5
+#12 11.00 Installing i18n 1.14.5
+#12 11.02 Fetching tzinfo 2.0.6
+#12 11.10 Installing tzinfo 2.0.6
+#12 11.11 Fetching websocket-driver 0.7.6
+#12 11.18 Installing websocket-driver 0.7.6 with native extensions
+#12 11.39 Fetching rack-session 2.0.0
+#12 11.40 Fetching rack-test 2.1.0
+#12 11.47 Installing rack-session 2.0.0
+#12 11.48 Installing rack-test 2.1.0
+#12 11.48 Fetching sprockets 4.2.1
+#12 11.63 Fetching net-protocol 0.2.2
+#12 11.64 Fetching addressable 2.8.7
+#12 11.70 Installing net-protocol 0.2.2
+#12 11.71 Installing sprockets 4.2.1
+#12 11.74 Fetching nokogiri 1.18.2
+#12 11.75 Installing addressable 2.8.7
+#12 11.76 Fetching brakeman 6.2.1
+#12 11.79 Fetching parser 3.3.5.0
+#12 11.79 Fetching rackup 2.1.0
+#12 11.96 Installing rackup 2.1.0
+#12 11.98 Fetching psych 5.1.2
+#12 12.22 Installing psych 5.1.2 with native extensions
+#12 12.50 Fetching selenium-webdriver 4.24.0
+#12 12.98 Installing parser 3.3.5.0
+#12 13.03 Fetching reline 0.5.10
+#12 13.06 Fetching puma 6.4.2
+#12 13.25 Installing reline 0.5.10
+#12 13.26 Fetching net-pop 0.1.2
+#12 13.38 Fetching net-smtp 0.5.0
+#12 13.72 Installing net-pop 0.1.2
+#12 13.73 Fetching bootsnap 1.18.4
+#12 13.74 Installing net-smtp 0.5.0
+#12 13.74 Fetching rdoc 6.7.0
+#12 13.86 Installing puma 6.4.2 with native extensions
+#12 13.90 Fetching rubocop-ast 1.32.3
+#12 14.21 Installing bootsnap 1.18.4 with native extensions
+#12 14.67 Fetching activesupport 7.2.2.1
+#12 14.82 Installing rubocop-ast 1.32.3
+#12 14.83 Fetching net-imap 0.4.16
+#12 14.98 Installing nokogiri 1.18.2 with native extensions
+#12 15.16 Fetching rubocop 1.66.1
+#12 15.31 Installing activesupport 7.2.2.1
+#12 15.35 Installing net-imap 0.4.16
+#12 15.38 Fetching activemodel 7.2.2.1
+#12 15.38 Fetching globalid 1.2.1
+#12 15.38 Fetching mail 2.8.1
+#12 15.77 Installing globalid 1.2.1
+#12 15.83 Installing activemodel 7.2.2.1
+#12 16.26 Installing rdoc 6.7.0
+#12 16.34 Installing mail 2.8.1
+#12 16.46 Installing rubocop 1.66.1
+#12 17.08 Installing brakeman 6.2.1
+#12 18.26 Installing selenium-webdriver 4.24.0
+#12 18.49 Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
+#12 18.49 
+#12 18.49 current directory:
+#12 18.49 /usr/local/bundle/ruby/3.1.0/gems/nokogiri-1.18.2/ext/nokogiri
+#12 18.49 /usr/local/bin/ruby -I /usr/local/lib/ruby/3.1.0 -r
+#12 18.49 ./siteconf20250204-7-zohki3.rb extconf.rb
+#12 18.49 checking for whether -std=c99 is accepted as CFLAGS... yes
+#12 18.49 checking for whether -Wno-declaration-after-statement is accepted as CFLAGS...
+#12 18.49 yes
+#12 18.49 checking for whether -O2 is accepted as CFLAGS... yes
+#12 18.49 checking for whether -g is accepted as CFLAGS... yes
+#12 18.49 checking for whether -Winline is accepted as CFLAGS... yes
+#12 18.49 checking for whether -Wmissing-noreturn is accepted as CFLAGS... yes
+#12 18.49 checking for whether -Wconversion is accepted as CFLAGS... no
+#12 18.49 Building nokogiri using packaged libraries.
+#12 18.49 Static linking is enabled.
+#12 18.49 Cross build is disabled.
+#12 18.49 *** extconf.rb failed ***
+#12 18.49 Could not create Makefile due to some reason, probably lack of necessary
+#12 18.49 libraries and/or headers.  Check the mkmf.log file for more details.  You may
+#12 18.49 need configuration options.
+#12 18.49 
+#12 18.49 Provided configuration options:
+#12 18.49 	--with-opt-dir
+#12 18.49 	--without-opt-dir
+#12 18.49 	--with-opt-include
+#12 18.49 	--without-opt-include=${opt-dir}/include
+#12 18.49 	--with-opt-lib
+#12 18.49 	--without-opt-lib=${opt-dir}/lib
+#12 18.49 	--with-make-prog
+#12 18.49 	--without-make-prog
+#12 18.49 	--srcdir=.
+#12 18.49 	--curdir
+#12 18.49 	--ruby=/usr/local/bin/$(RUBY_BASE_NAME)
+#12 18.49 	--help
+#12 18.49 	--clean
+#12 18.49 	--prevent-strip
+#12 18.49 	--enable-system-libraries
+#12 18.49 	--disable-system-libraries
+#12 18.49 	--use-system-libraries
+#12 18.49 	--enable-system-libraries
+#12 18.49 	--disable-system-libraries
+#12 18.49 	--use-system-libraries
+#12 18.49 	--enable-static
+#12 18.49 	--disable-static
+#12 18.49 	--enable-cross-build
+#12 18.49 	--disable-cross-build
+#12 18.49 	--enable-cross-build
+#12 18.49 	--disable-cross-build
+#12 18.49 /usr/local/lib/ruby/3.1.0/psych.rb:455:in `parse_stream': undefined method
+#12 18.49 `parse' for #<Psych::Parser:0x0000ffffb2dc3a68
+#12 18.49 @handler=#<Psych::Handlers::DocumentStream:0x0000ffffb2dc3c20 @stack=[],
+#12 18.49 @last=nil, @root=nil, @start_line=nil, @start_column=nil, @end_line=nil,
+#12 18.49 @end_column=nil, @block=#<Proc:0x0000ffffb2dc3b58
+#12 18.49 /usr/local/lib/ruby/3.1.0/psych.rb:399>>, @external_encoding=0> (NoMethodError)
+#12 18.49 
+#12 18.49       parser.parse yaml, filename
+#12 18.49             ^^^^^^
+#12 18.49 	from /usr/local/lib/ruby/3.1.0/psych.rb:399:in `parse'
+#12 18.49 	from /usr/local/lib/ruby/3.1.0/psych.rb:324:in `safe_load'
+#12 18.49 	from /usr/local/lib/ruby/3.1.0/psych.rb:370:in `load'
+#12 18.49 	from /usr/local/lib/ruby/3.1.0/psych.rb:671:in `block in load_file'
+#12 18.49 	from /usr/local/lib/ruby/3.1.0/psych.rb:670:in `open'
+#12 18.49 	from /usr/local/lib/ruby/3.1.0/psych.rb:670:in `load_file'
+#12 18.49 	from extconf.rb:772:in `<main>'
+#12 18.49 
+#12 18.49 To see why this extension failed to compile, please check the mkmf.log which can
+#12 18.49 be found here:
+#12 18.49 
+#12 18.49 /usr/local/bundle/ruby/3.1.0/extensions/aarch64-linux/3.1.0/nokogiri-1.18.2/mkmf.log
+#12 18.49 
+#12 18.49 extconf failed, exit code 1
+#12 18.49 
+#12 18.49 Gem files will remain installed in
+#12 18.49 /usr/local/bundle/ruby/3.1.0/gems/nokogiri-1.18.2 for inspection.
+#12 18.49 Results logged to
+#12 18.49 /usr/local/bundle/ruby/3.1.0/extensions/aarch64-linux/3.1.0/nokogiri-1.18.2/gem_make.out
+#12 18.49 
+#12 18.49   /usr/local/lib/ruby/3.1.0/rubygems/ext/builder.rb:95:in `run'
+#12 18.49 /usr/local/lib/ruby/3.1.0/rubygems/ext/ext_conf_builder.rb:47:in `block in
+#12 18.49 build'
+#12 18.49   /usr/local/lib/ruby/3.1.0/tempfile.rb:317:in `open'
+#12 18.49   /usr/local/lib/ruby/3.1.0/rubygems/ext/ext_conf_builder.rb:26:in `build'
+#12 18.49   /usr/local/lib/ruby/3.1.0/rubygems/ext/builder.rb:161:in `build_extension'
+#12 18.49 /usr/local/lib/ruby/3.1.0/rubygems/ext/builder.rb:195:in `block in
+#12 18.49 build_extensions'
+#12 18.49   /usr/local/lib/ruby/3.1.0/rubygems/ext/builder.rb:192:in `each'
+#12 18.49   /usr/local/lib/ruby/3.1.0/rubygems/ext/builder.rb:192:in `build_extensions'
+#12 18.49   /usr/local/lib/ruby/3.1.0/rubygems/installer.rb:853:in `build_extensions'
+#12 18.49 /usr/local/lib/ruby/3.1.0/bundler/rubygems_gem_installer.rb:71:in
+#12 18.49 `build_extensions'
+#12 18.49   /usr/local/lib/ruby/3.1.0/bundler/rubygems_gem_installer.rb:28:in `install'
+#12 18.49   /usr/local/lib/ruby/3.1.0/bundler/source/rubygems.rb:204:in `install'
+#12 18.49   /usr/local/lib/ruby/3.1.0/bundler/installer/gem_installer.rb:54:in `install'
+#12 18.49 /usr/local/lib/ruby/3.1.0/bundler/installer/gem_installer.rb:16:in
+#12 18.49 `install_from_spec'
+#12 18.49 /usr/local/lib/ruby/3.1.0/bundler/installer/parallel_installer.rb:186:in
+#12 18.49 `do_install'
+#12 18.49 /usr/local/lib/ruby/3.1.0/bundler/installer/parallel_installer.rb:177:in
+#12 18.49 `block in worker_pool'
+#12 18.49   /usr/local/lib/ruby/3.1.0/bundler/worker.rb:62:in `apply_func'
+#12 18.49   /usr/local/lib/ruby/3.1.0/bundler/worker.rb:57:in `block in process_queue'
+#12 18.49   /usr/local/lib/ruby/3.1.0/bundler/worker.rb:54:in `loop'
+#12 18.49   /usr/local/lib/ruby/3.1.0/bundler/worker.rb:54:in `process_queue'
+#12 18.49 /usr/local/lib/ruby/3.1.0/bundler/worker.rb:91:in `block (2 levels) in
+#12 18.49 create_threads'
+#12 18.49 
+#12 18.49 An error occurred while installing nokogiri (1.18.2), and Bundler cannot
+#12 18.49 continue.
+#12 18.49 
+#12 18.49 In Gemfile:
+#12 18.49   rails was resolved to 7.2.2.1, which depends on
+#12 18.49     actioncable was resolved to 7.2.2.1, which depends on
+#12 18.49       actionpack was resolved to 7.2.2.1, which depends on
+#12 18.49         actionview was resolved to 7.2.2.1, which depends on
+#12 18.49           rails-dom-testing was resolved to 2.2.0, which depends on
+#12 18.49             nokogiri
+#12 ERROR: process "/bin/sh -c bundle install &&     rm -rf ~/.bundle/ \"${BUNDLE_PATH}\"/ruby/*/cache \"${BUNDLE_PATH}\"/ruby/*/bundler/gems/*/.git &&     bundle exec bootsnap precompile --gemfile" did not complete successfully: exit code: 5
+------
+ > [web build 3/6] RUN bundle install &&     rm -rf ~/.bundle/ "/usr/local/bundle"/ruby/*/cache "/usr/local/bundle"/ruby/*/bundler/gems/*/.git &&     bundle exec bootsnap precompile --gemfile:
+18.49 An error occurred while installing nokogiri (1.18.2), and Bundler cannot
+18.49 continue.
+18.49 
+18.49 In Gemfile:
+18.49   rails was resolved to 7.2.2.1, which depends on
+18.49     actioncable was resolved to 7.2.2.1, which depends on
+18.49       actionpack was resolved to 7.2.2.1, which depends on
+18.49         actionview was resolved to 7.2.2.1, which depends on
+18.49           rails-dom-testing was resolved to 2.2.0, which depends on
+18.49             nokogiri
+------
+failed to solve: process "/bin/sh -c bundle install &&     rm -rf ~/.bundle/ \"${BUNDLE_PATH}\"/ruby/*/cache \"${BUNDLE_PATH}\"/ruby/*/bundler/gems/*/.git &&     bundle exec bootsnap precompile --gemfile" did not complete successfully: exit code: 5
