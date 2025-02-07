@@ -7,10 +7,11 @@ services:
       - "3000:3000"
     volumes:
       - .:/app
-      - ./config/ssl:/app/config/ssl
+      
     depends_on:
       - db
     environment:
+      RAILS_ENV: development
       DATABASE_URL: "postgres://postgres:password@db:5432/my_database"
       SECRET_KEY_BASE: 3XfRICu7/aKqOpMKPxzSgBBFHalezgcpYoMCecgBPDGIKALYKHr8XYWdFIy6zkK9yPmxrIMIWhAD5bamsR6MiLu/rllx9BXUNZVKL7fxPePKCl6tiX+ujrWHxxeCZ8d9mcpbFR7f1BemXn/CXYMRe7fJ0/x4sLxULS5UAeRbk1Nrc3ZsbcJycq7q9r9Rmk6wn9dxWqFq1G11XoZkpNCOpFDx4npqELyPzf3rBcJxajNTiE2JJjXmSZ409IGU6WrdiYmoRWVzbV3dOcpPhCWDhwSWJINz21jDOVWn4SN5f4iWBFpM/IJktH3Gj/k+adiwsOQHBL0SzbJC2JRu9mdfGbyWYupDRhVnw+YCtnLOzn7QdmptODR8wY26FHi/sTe9798C/Zpy2WRQepC16QhIlgbY7+xh--704vSsWz+WRrnVqr--A93hg8P7bk4Mruwl2H4VSw==
 
