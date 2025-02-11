@@ -86,7 +86,9 @@ test:
 #
 production:
   <<: *default
-  database: graduation_work_production
-  host: db
-  username: postgres      # docker-compose.yml で設定した POSTGRES_USER に合わせる
-  password: password
+  #render.com内のデータベースURLが実行されるはず
+  url: <%= ENV['DATABASE_URL'] %>
+  #database: graduation_work_production
+  #host: db
+  #username: postgres      # docker-compose.yml で設定した POSTGRES_USER に合わせる
+  #password: password
