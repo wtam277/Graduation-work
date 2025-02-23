@@ -1,0 +1,10 @@
+<h1>作品一覧</h1>
+<%= link_to "新しい作品を追加", new_work_path %>
+
+<ul>
+  <% @comics.each do |comic| %>
+    <li>
+      <%= link_to comic.title, comic_story_maps_path(comic) %> (ページ数: <%= comic.total_page %>)
+    </li>
+  <% end %>
+</ul>

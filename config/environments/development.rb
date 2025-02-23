@@ -82,4 +82,7 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::FileUpdateChecker
   config.reload_classes_only_on_change = true
 
+  #CSSファイルの即時更新
+  config.assets.debug = true
+
 end

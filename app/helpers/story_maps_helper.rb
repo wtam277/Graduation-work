@@ -1,0 +1,2 @@
+module StoryMapsHelper
+end

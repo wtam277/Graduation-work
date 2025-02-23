@@ -18,6 +18,14 @@
   </head>
 
   <body>
+  <% if ["story_maps","story_parts"].include?(controller_name) && ["index", "show"].include?(action_name) %>
+    <%= render "shared/header" %>
+  <% end %>
+
+  <main>
     <%= yield %>
-  </body>
+  </main>
+  <% if ["story_maps","story_parts","characters"].include?(controller_name) && ["index", "show"].include?(action_name) %>
+     <%= render "shared/footer" %>
+  <% end %>
 </html>

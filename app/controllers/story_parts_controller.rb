@@ -1,0 +1,57 @@
+class StoryPartsController < ApplicationController
+  before_action :set_comic
+  before_action :set_story_part, only: [:update]
+
+  def index
+    @story_parts = @comic.story_parts || []  # nilの可能性をなくす
+    @story_part = @comic.story_parts.build
+  end
+
+  def create
+    params[:story_part].each do |index, story_part_params|
+      content = story_part_params[:content]
+      part_type = story_part_params[:part_type].to_i
+  
+      next if content.blank?
+  
+      # すでに存在する場合は更新、それ以外は新規作成
+      story_part = @comic.story_parts.find_or_initialize_by(part_type: part_type)
+      story_part.update!(content: content)
+    end
+    render :index
+    #redirect_to comic_story_parts_path(@comic), notice: "ストーリー部分を追加しました！"
+  end
+
+  def update
+    # 4つの固定されたフォーム（起・承・転・結）を処理
+    (0..3).each do |i|
+      story_part_params = params["story_part_#{i}"]
+      next if story_part_params[:content].blank? # 空ならスキップ
+  
+      # すでに存在するストーリーパートを検索
+      story_part = @comic.story_parts.find_or_initialize_by(part_type: story_part_params[:part_type])
+  
+      # データを更新
+      story_part.update!(
+        content: story_part_params[:content]
+      )
+    end
+  
+    # index にリダイレクト
+    redirect_to comic_story_parts_path(@comic), notice: "ストーリー部分を更新しました！"
+  end
+
+  private
+
+  def set_comic
+    @comic = Comic.find(params[:comic_id])
+  end
+
+  def story_part_params
+    params.require(:story_part).permit(:content, :part_type)
+  end
+
+  def set_story_map
+    @story_part = @comic.story_parts.last
+  end
+end

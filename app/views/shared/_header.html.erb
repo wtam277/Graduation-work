@@ -1,0 +1,10 @@
+<header>
+<nav>
+  <% if @comic.present? %>
+    <a>作品名：<%= @comic.title %></a>
+  <% else %>
+    <a>作品が選択されていません</a>
+  <% end %>
+</nav>
+<%= link_to "作品一覧に戻る", works_path %>
+</header>

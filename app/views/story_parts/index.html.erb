@@ -1,0 +1,24 @@
+<h1>StoryParts#index</h1>
+<p>Find me in app/views/story_parts/index.html.erb</p>
+<p>起承転結</p>
+
+
+
+<!-- フォーム -->
+<%= form_with(url: comic_story_parts_path(@comic), local: true) do %>
+    <h2>内容の入力（起承転結）</h2>
+  
+    <% (0..3).each do |i| %>
+       <% story_part = @story_parts&.find { |sp| sp.part_type == i } %>
+  
+      <div>
+        <%= label_tag "story_part[#{i}][content]", ["起", "承", "転", "結"][i] %>
+        <%= text_area_tag "story_part[#{i}][content]", story_part&.content, rows: 4, cols: 50 %>
+        <%= hidden_field_tag "story_part[#{i}][part_type]", i %>
+      </div>
+    <% end %>
+  
+    <div>
+      <%= submit_tag "保存" %>
+    </div>
+  <% end %>

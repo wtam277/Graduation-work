@@ -1,6 +1,19 @@
 Rails.application.routes.draw do
+  resources :works
   devise_for :users
   root "home#index"
+  get "/works", to: "works#index"
+
+  resources :panels, only: [:index]
+
+  #storymapをcomicsモデルに紐付けする
+  resources :comics do
+    resources :story_maps, only: [:index, :create, :update] 
+    resources :story_parts, only: [:index, :create, :update] 
+    resources :characters, only: [:index, :create, :update]
+  end
+
+  resources :story_maps, only: [:index, :create, :update]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

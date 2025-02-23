@@ -16,3 +16,25 @@
  body {
     font-family: Arial, sans-serif;
   }
+
+  form {
+    width: 500px; /* フォームの幅を固定 */
+    margin: 0; /* 余白をリセット */
+    display: block; /* ブロック要素にする */
+    text-align: left; /* フォーム内の要素を左揃え */
+  }
+  
+  textarea {
+    width: 100%; /* テキストエリアの幅をフォームに合わせる */
+    resize: none; /* ユーザーがサイズ変更できないようにする */
+  }
+  
+  input[type="submit"] {
+    display: block;
+    width: 100%;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px; /* ラベルとテキストエリアの間に余白を追加 */
+  }
