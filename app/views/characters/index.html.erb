@@ -1,1 +1,50 @@
-<h1>このページは、キャラクターです</h1>
+<h1>キャラクター一覧</h1>
+
+<!-- 新規キャラクター作成フォーム -->
+<%= form_with(model: [@comic, @character], url: comic_characters_path(@comic), local: true, multipart: true) do |f| %>
+  <div>
+    <%= f.label :name, "キャラクター名" %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div>
+    <%= f.label :description, "キャラクター説明" %>
+    <%= f.text_area :description, rows: 4, cols: 50 %>
+  </div>
+
+  <div>
+    <%= f.label :icon, "アイコン画像" %>
+    <%= f.file_field :icon %>
+  </div>
+
+  <div>
+    <%= f.submit "作成" %>
+  </div>
+<% end %>
+
+<hr>
+
+<!-- キャラクター一覧表示 -->
+<h2>登録されたキャラクター</h2>
+
+<% if @characters.any? %>
+  <ul>
+    <% @characters.each do |character| %>
+      <% if character.id.present? %>
+        <li>
+          <!-- アイコン画像を表示 -->
+          <% if character.icon.attached? %>
+            <%= image_tag character.icon.variant(resize_to_fill: [100, 100]), class: "rounded-full" %>
+          <% end %>
+
+          <%= character.name %> 
+          <%= link_to "編集", edit_comic_character_path(@comic, character) %>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+<% else %>
+  <p>キャラクターがいません</p>
+<% end %>
+
+<%= link_to "作品一覧に戻る", works_path %>

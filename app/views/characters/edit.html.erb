@@ -1,0 +1,29 @@
+<h1>キャラクター編集</h1>
+
+<%= form_with(model: [@comic, @character], local: true, multipart: true) do |f| %>
+  <div>
+    <%= f.label :name, "キャラクター名" %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div>
+    <%= f.label :description, "キャラクター説明" %>
+    <%= f.text_area :description, rows: 4, cols: 50 %>
+  </div>
+
+  <div>
+    <%= f.label :icon, "アイコン画像" %>
+    <%= f.file_field :icon %>
+  </div>
+
+  <% if @character.icon.attached? %>
+    <p>現在の画像:</p>
+    <%= image_tag @character.icon.variant(resize_to_fill: [100, 100]), class: "rounded-full" %>
+  <% end %>
+
+  <div>
+    <%= f.submit "更新" %>
+  </div>
+<% end %>
+
+<%= link_to "キャラクター一覧に戻る", comic_characters_path(@comic) %>

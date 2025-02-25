@@ -38,3 +38,11 @@
     display: block;
     margin-bottom: 5px; /* ラベルとテキストエリアの間に余白を追加 */
   }
+
+   /* characterの画像設定 */
+  .rounded-full {
+    border-radius: 50%; /* 画像を丸く表示 */
+    object-fit: cover; /* 縦横比を維持してカバー */
+    width: 100px;
+    height: 100px;
+  }

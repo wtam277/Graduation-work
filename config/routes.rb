@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   resources :comics do
     resources :story_maps, only: [:index, :create, :update] 
     resources :story_parts, only: [:index, :create, :update] 
-    resources :characters, only: [:index, :create, :update]
+    resources :characters, only: [:index, :create, :update, :edit]
   end
 
   resources :story_maps, only: [:index, :create, :update]
