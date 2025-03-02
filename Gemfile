@@ -59,6 +59,10 @@ group :test do
   gem "selenium-webdriver"
 end
 
+group :production do
+  gem "aws-sdk-s3"  
+  gem 'aws-sdk-ssm'
+end
 
 gem "devise", "~> 4.9"
 gem "image_processing", "~> 1.12"
