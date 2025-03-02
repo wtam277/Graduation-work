@@ -66,3 +66,4 @@ end
 
 gem "devise", "~> 4.9"
 gem "image_processing", "~> 1.12"
+gem 'dotenv-rails'

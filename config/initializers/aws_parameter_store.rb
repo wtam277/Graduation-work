@@ -7,7 +7,7 @@ ssm = Aws::SSM::Client.new(
 
 # Parameter Store から環境変数を取得
 def fetch_ssm_parameter(name)
-  ssm.get_parameter(name: rails_Graduation-work, with_decryption: true).parameter.value
+    ssm.get_parameter(name: name, with_decryption: true).parameter.value
 rescue Aws::SSM::Errors::ServiceError => e
   Rails.logger.error("AWS SSM Parameter Store Error: #{e.message}")
   nil
