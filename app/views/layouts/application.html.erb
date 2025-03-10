@@ -18,14 +18,14 @@
   </head>
 
   <body>
-  <% if ["story_maps","story_parts"].include?(controller_name) && ["index", "show","edit"].include?(action_name) %>
+  <% if ["story_maps","story_parts","characters","panels"].include?(controller_name) && ["index", "show","edit"].include?(action_name) %>
     <%= render "shared/header" %>
   <% end %>
 
   <main>
     <%= yield %>
   </main>
-  <% if ["story_maps","story_parts","characters"].include?(controller_name) && ["index", "show","edit"].include?(action_name) %>
+  <% if ["story_maps","story_parts","characters","panels"].include?(controller_name) && ["index", "show","edit"].include?(action_name) %>
      <%= render "shared/footer" %>
   <% end %>
 </html>

@@ -4,14 +4,23 @@ Rails.application.routes.draw do
   root "home#index"
   get "/works", to: "works#index"
 
-  resources :panels, only: [:index]
 
   #storymapをcomicsモデルに紐付けする
   resources :comics do
     resources :story_maps, only: [:index, :create, :update] 
     resources :story_parts, only: [:index, :create, :update] 
     resources :characters, only: [:index, :create, :update, :edit]
+    resources :panels, only: [:index, :create, :update]
+    resources :stiky_notes, only: [] do
+      collection do
+        post :create, to: "story_parts#create_note"
+      end
+      member do
+        patch :update, to: "story_parts#update_note"
+      end
+    end
   end
+
 
   resources :story_maps, only: [:index, :create, :update]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

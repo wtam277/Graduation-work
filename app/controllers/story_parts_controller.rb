@@ -5,6 +5,7 @@ class StoryPartsController < ApplicationController
   def index
     @story_parts = @comic.story_parts || []  # nilの可能性をなくす
     @story_part = @comic.story_parts.build
+    @stiky_notes = @comic.stiky_notes.where(notable_type: "story_part")|| []
   end
 
   def create
@@ -18,8 +19,25 @@ class StoryPartsController < ApplicationController
       story_part = @comic.story_parts.find_or_initialize_by(part_type: part_type)
       story_part.update!(content: content)
     end
-    render :index
+    redirect_to comic_story_parts_path(@comic), notice: "ストーリー部分を追加しました！"
     #redirect_to comic_story_parts_path(@comic), notice: "ストーリー部分を追加しました！"
+  end
+
+  def create_note
+    note = @comic.stiky_notes.create!(
+      notable_type: "story_part",
+      note_content: params[:stiky_note][:note_content],
+      position_x: params[:stiky_note][:position_x],
+      position_y: params[:stiky_note][:position_y]
+    )
+
+    render json: note
+  end
+
+  def update_note
+    note = @comic.stiky_notes.find(params[:id])
+    note.update!(stiky_note_params)
+    render json: note
   end
 
   def update
@@ -53,5 +71,9 @@ class StoryPartsController < ApplicationController
 
   def set_story_map
     @story_part = @comic.story_parts.last
+  end
+
+  def stiky_note_params
+    params.require(:stiky_note).permit(:note_content, :position_x, :position_y)
   end
 end
