@@ -1,0 +1,33 @@
+<%= form_with(model: [@comic, @relationship_group], url: comic_relationship_groups_path(@comic), local: true) do |f| %>
+    <div class="character-field">
+      <%= f.label :group_name, "キャラクター相関図名：" %>
+      <%= f.text_field :group_name %>
+    </div>
+  
+    <% @relationship_group.relationships.build if @relationship_group.relationships.empty? %>
+    <%= f.fields_for :relationships do |rf| %>
+      <div class="character-field">
+        <%= rf.label :character_a_id, "キャラクターを選択 (1人目)" %>
+        <%= rf.select :character_a_id, options_from_collection_for_select(@characters, :id, :name), { include_blank: "キャラクターを選択" }, { id: "character-select-1", class: "character-select", onchange: "filterCharacters()" } %>
+      </div>
+  
+      <div class="character-field">
+        <%= rf.label :directionality, "関係の向き" %>
+        <%= rf.select :directionality, [["→", 1], ["⇄", 2]], { include_blank: "関係の向きを選択" }, { id: "directionality-select", class: "directionality-select" } %>
+      </div>
+  
+      <div class="character-field">
+        <%= rf.label :relationship_type, "関係の種類" %>
+        <%= rf.text_field :relationship_type, placeholder: "例: 友達, 兄弟, 師弟" %>
+      </div>
+  
+      <div class="character-field">
+        <%= rf.label :character_b_id, "キャラクターを選択 (2人目)" %>
+        <%= rf.select :character_b_id, options_from_collection_for_select(@characters, :id, :name), { include_blank: "キャラクターを選択" }, { id: "character-select-2", class: "character-select" } %>
+      </div>
+    <% end %>
+  
+    <div>
+      <%= f.submit "作成" %>
+    </div>
+  <% end %>

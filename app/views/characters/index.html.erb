@@ -47,4 +47,7 @@
   <p>キャラクターがいません</p>
 <% end %>
 
+<hr>
+<h2>キャラクター相関図</h2>
+<%= link_to "相関図作成", comic_relationship_groups_path(@comic,@relationship_groups) %>
 <%= link_to "作品一覧に戻る", works_path %>

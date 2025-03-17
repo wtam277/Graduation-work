@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_09_060628) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_15_052632) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -60,6 +60,15 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_09_060628) do
     t.index ["user_id"], name: "index_comics_on_user_id"
   end
 
+  create_table "pages", force: :cascade do |t|
+    t.bigint "comic_id", null: false
+    t.integer "page_number", null: false
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comic_id"], name: "index_pages_on_comic_id"
+  end
+
   create_table "panels", force: :cascade do |t|
     t.integer "position", null: false
     t.string "location", null: false
@@ -67,6 +76,27 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_09_060628) do
     t.datetime "updated_at", null: false
     t.bigint "comic_id", null: false
     t.index ["comic_id"], name: "index_panels_on_comic_id"
+  end
+
+  create_table "relationship_groups", force: :cascade do |t|
+    t.bigint "comic_id", null: false
+    t.string "group_name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comic_id"], name: "index_relationship_groups_on_comic_id"
+  end
+
+  create_table "relationships", force: :cascade do |t|
+    t.bigint "relationship_group_id", null: false
+    t.bigint "character_a_id", null: false
+    t.bigint "character_b_id", null: false
+    t.string "relationship_type", null: false
+    t.integer "directionality", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["character_a_id"], name: "index_relationships_on_character_a_id"
+    t.index ["character_b_id"], name: "index_relationships_on_character_b_id"
+    t.index ["relationship_group_id"], name: "index_relationships_on_relationship_group_id"
   end
 
   create_table "speeches", force: :cascade do |t|
@@ -127,7 +157,12 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_09_060628) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "characters", "comics"
   add_foreign_key "comics", "users"
+  add_foreign_key "pages", "comics"
   add_foreign_key "panels", "comics"
+  add_foreign_key "relationship_groups", "comics"
+  add_foreign_key "relationships", "characters", column: "character_a_id"
+  add_foreign_key "relationships", "characters", column: "character_b_id"
+  add_foreign_key "relationships", "relationship_groups"
   add_foreign_key "speeches", "characters"
   add_foreign_key "speeches", "panels"
   add_foreign_key "stiky_notes", "comics"

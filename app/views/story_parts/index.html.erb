@@ -6,15 +6,18 @@
     <% story_part = @story_parts&.find { |sp| sp.part_type == i } %>
 
     <div class="story-part-container">
+      <!-- ラベル -->
       <div class="story-part-label">
         <%= label_tag "story_part[#{i}][content]", ["起", "承", "転", "結"][i] %>
       </div>
 
+      <!-- 入力フォーム -->
       <div class="story-part-input">
         <%= text_area_tag "story_part[#{i}][content]", story_part&.content, rows: 4, cols: 50 %>
         <%= hidden_field_tag "story_part[#{i}][part_type]", i %>
       </div>
 
+      <!-- 追加ボタン -->
       <div class="note-button">
         <button type="button" class="add-note" onclick="addDraggableNote()">＋</button>
       </div>
@@ -94,12 +97,10 @@
 </style>
 
 <script>
-  document.addEventListener("turbo:load", applyDraggableToExistingNotes);
-  document.addEventListener("DOMContentLoaded", applyDraggableToExistingNotes);
-
-  function applyDraggableToExistingNotes() {
+  // 既存の付箋にドラッグ機能を適用
+  document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".note").forEach(makeNoteDraggable);
-  }
+  });
 
   function addDraggableNote() {
     fetch("<%= comic_stiky_notes_path(@comic) %>", {
@@ -132,6 +133,7 @@
       note.appendChild(textArea);
       noteContainer.appendChild(note);
 
+      // 新しく作成したメモにドラッグ機能を適用
       makeNoteDraggable(note);
     });
   }
@@ -151,7 +153,7 @@
     let isDragging = false;
 
     note.addEventListener("mousedown", function(event) {
-      if (event.target.tagName === "TEXTAREA") return;
+      if (event.target.tagName === "TEXTAREA") return; // テキストエリアのクリック時はドラッグ禁止
 
       isDragging = true;
       let shiftX = event.clientX - note.getBoundingClientRect().left;

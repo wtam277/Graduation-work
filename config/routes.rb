@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "relationship_groups/index"
   resources :works
   devise_for :users
   root "home#index"
@@ -11,6 +12,8 @@ Rails.application.routes.draw do
     resources :story_parts, only: [:index, :create, :update] 
     resources :characters, only: [:index, :create, :update, :edit]
     resources :panels, only: [:index, :create, :update]
+    resources :relationship_groups, only: [:index, :new, :create, :update, :edit, :destroy]
+    resources :pages, only: [:index, :create, :update]
     resources :stiky_notes, only: [] do
       collection do
         post :create, to: "story_parts#create_note"

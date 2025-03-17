@@ -1,0 +1,19 @@
+<h1>ページ詳細</h1>
+
+<%= form_with(url: comic_pages_path(@comic), method: :post, local: true) do %>
+  <% @pages.each_with_index do |page, i| %>
+    <div class="page-form">
+      <div class="form-group">
+        <span class="page-number"><%= i + 1 %></span>
+        <%= text_area_tag "pages[#{i}][content]", page.content, rows: 3, class: "content-textarea" %>
+        <%= hidden_field_tag "pages[#{i}][id]", page.id if page.persisted? %>
+        <%= hidden_field_tag "pages[#{i}][page_number]", page.page_number %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- すべてのページを保存するボタン -->
+  <div class="form-submit">
+    <%= submit_tag "保存", class: "save-button" %>
+  </div>
+<% end %>

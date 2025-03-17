@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Split.jsのインストール -->
+    <!--
+    <script src="https://unpkg.com/split.js/dist/split.min.js"></script>
+    <title>GraduationWorks</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload", media: "all" %>
+    <%= javascript_importmap_tags %>
+
+    <% if ["story_maps", "story_parts", "characters", "panels"].include?(controller_name) %>
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          if (document.querySelector("#split-container") && !document.querySelector("#right-panel #split-container")) {
+            Split(["#left-panel", "#right-panel"], {
+              sizes: [50, 50], // 左右のサイズを50%ずつ
+              minSize: 200,    // 最小サイズ
+              gutterSize: 5,   // 仕切りのサイズ
+            });
+          }
+        });
+
+        // パネルのコンテンツをロードする関数
+        function loadPanel(panelId, url) {
+          fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
+            .then(response => response.text())
+            .then(html => {
+              const panel = document.getElementById(panelId);
+              const tempDiv = document.createElement("div");
+              tempDiv.innerHTML = html;
+
+              // split-container がネストされないように中身だけ取得
+              const splitContainer = tempDiv.querySelector("#split-container");
+              if (splitContainer) {
+                panel.innerHTML = splitContainer.innerHTML;
+              } else {
+                panel.innerHTML = html;
+              }
+            })
+            .catch(error => console.error("Error loading content:", error));
+        }
+
+        // 左パネルのコンテンツを更新
+        function loadLeft(event) {
+          event.preventDefault();
+          loadPanel("left-panel-content", event.currentTarget.getAttribute("href"));
+        }
+
+        // 右パネルのコンテンツを更新
+        function loadRight(event) {
+          event.preventDefault();
+          loadPanel("right-panel-content", event.currentTarget.getAttribute("href"));
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+          document.querySelectorAll("[data-action='click->split#loadLeft']").forEach(link => {
+            link.addEventListener("click", loadLeft);
+          });
+
+          document.querySelectorAll("[data-action='click->split#loadRight']").forEach(link => {
+            link.addEventListener("click", loadRight);
+          });
+        });
+      </script>
+    <% end %>
+        -->
+
+        <!--
+    <style>
+      /* Split.jsのコンテナ全体 */
+      #split-container {
+        display: flex;
+        height: 100vh; /* 画面の高さいっぱいに分割 */
+      }
+
+      /* 左パネル */
+      #left-panel {
+        flex: 1;
+        overflow: auto;
+        background-color: #f4f4f4;
+        padding: 10px;
+      }
+
+      /* 右パネル */
+      #right-panel {
+        flex: 1;
+        overflow: auto;
+        background-color: #ffffff;
+        padding: 10px;
+      }
+
+      /* Split.jsの仕切り（gutter）のスタイル */
+      .gutter {
+        background-color: #ddd;
+        cursor: ew-resize;
+        width: 5px;
+      }
+
+      /* ナビゲーションリンク */
+      .panel-links {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+      -->
+
+
+  <body>
+    <!-- **Split.jsの画面分割コンテナを追加** -->
+    <main>
+      <% if ["story_maps", "story_parts", "characters", "panels"].include?(controller_name) %>
+        <div id="split-container">
+          <!-- 左側パネル -->
+          <div id="left-panel">
+            <div class="panel-links">
+              <%= link_to "1", comic_story_maps_path(@comic), data: { action: "click->split#loadLeft" } %>
+              <%= link_to "2", comic_story_parts_path(@comic), data: { action: "click->split#loadLeft" } %>
+              <%= link_to "3", comic_characters_path(@comic), data: { action: "click->split#loadLeft" } %>
+              <%= link_to "4", comic_panels_path(@comic), data: { action: "click->split#loadLeft" } %>
+            </div>
+            <div id="left-panel-content">
+              <%= render template: "#{controller_name}/index", locals: { comic: @comic }, layout: false %>
+            </div>
+          </div>
+
+          <!-- 右側パネル -->
+          <div id="right-panel">
+            <div class="panel-links">
+              <%= link_to "1", comic_story_maps_path(@comic), data: { action: "click->split#loadRight" } %>
+              <%= link_to "2", comic_story_parts_path(@comic), data: { action: "click->split#loadRight" } %>
+              <%= link_to "3", comic_characters_path(@comic), data: { action: "click->split#loadRight" } %>
+              <%= link_to "4", comic_panels_path(@comic), data: { action: "click->split#loadRight" } %>
+            </div>
+            <div id="right-panel-content">
+              <%= render template: "#{controller_name}/index", locals: { comic: @comic }, layout: false %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </main>
+  </body>
+</html>
