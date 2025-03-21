@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_15_052632) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_20_090620) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -60,6 +60,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_15_052632) do
     t.index ["user_id"], name: "index_comics_on_user_id"
   end
 
+  create_table "locations", force: :cascade do |t|
+    t.bigint "panel_id", null: false
+    t.string "location_name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["panel_id"], name: "index_locations_on_panel_id"
+  end
+
   create_table "pages", force: :cascade do |t|
     t.bigint "comic_id", null: false
     t.integer "page_number", null: false
@@ -70,12 +78,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_15_052632) do
   end
 
   create_table "panels", force: :cascade do |t|
-    t.integer "position", null: false
-    t.string "location", null: false
+    t.integer "position", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "comic_id", null: false
+    t.index ["comic_id", "position"], name: "index_panels_on_comic_id_and_position", unique: true
     t.index ["comic_id"], name: "index_panels_on_comic_id"
+    t.check_constraint "\"position\" >= 1 AND \"position\" <= 16", name: "check_position_range"
   end
 
   create_table "relationship_groups", force: :cascade do |t|
@@ -105,7 +114,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_15_052632) do
     t.string "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "position", default: 0, null: false
     t.index ["character_id"], name: "index_speeches_on_character_id"
+    t.index ["panel_id", "position"], name: "index_speeches_on_panel_id_and_position", unique: true
     t.index ["panel_id"], name: "index_speeches_on_panel_id"
   end
 
@@ -157,6 +168,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_15_052632) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "characters", "comics"
   add_foreign_key "comics", "users"
+  add_foreign_key "locations", "panels"
   add_foreign_key "pages", "comics"
   add_foreign_key "panels", "comics"
   add_foreign_key "relationship_groups", "comics"

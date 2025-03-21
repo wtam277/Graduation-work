@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     resources :story_maps, only: [:index, :create, :update] 
     resources :story_parts, only: [:index, :create, :update] 
     resources :characters, only: [:index, :create, :update, :edit]
-    resources :panels, only: [:index, :create, :update]
+    resources :panels, only: [:index, :new, :create, :update, :edit]
     resources :relationship_groups, only: [:index, :new, :create, :update, :edit, :destroy]
     resources :pages, only: [:index, :create, :update]
     resources :stiky_notes, only: [] do

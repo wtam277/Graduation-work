@@ -11,7 +11,7 @@ class RelationshipGroupsController < ApplicationController
   def new
     @characters = @comic.characters
     @relationship_group = @comic.relationship_groups.build
-    @relationship_group.relationships.build
+    @relationship_group.relationships.build if @relationship_group.relationships.empty?
     @relationship_groups = @comic.relationship_groups.includes(:relationships)
   end
   def create

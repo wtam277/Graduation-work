@@ -53,18 +53,54 @@
   </script>
   
   <h2>相関図一覧</h2>
-  <%= link_to "新規作成", new_comic_relationship_group_path(@comic,@relationship_groups) %>
-  <% if @relationship_groups.present? && @relationship_groups.any? %>
-    <ul>
-      <% @relationship_groups.each do |relationship_group| %> 
-        <% if relationship_group.id.present? %>
-          <li><%= relationship_group.group_name %></li>
+<%= link_to "新規作成", new_comic_relationship_group_path(@comic) %>
+
+<% if @relationship_groups.present? && @relationship_groups.any? %>
+  <ul>
+    <% @relationship_groups.each do |relationship_group| %> 
+      <% if relationship_group.id.present? %>
+        <li>
+          <strong>相関図名:</strong> <%= relationship_group.group_name %>
+          
+          <% if relationship_group.relationships.any? %>
+            <ul>
+              <% relationship_group.relationships.each do |relationship| %>
+                <li class="relationship-item">
+                  <!-- Character A -->
+                  <div class="character">
+                    <%= image_tag relationship.character_a.icon, class: "rounded-full" if relationship.character_a.icon.attached? %>
+                    <p><%= relationship.character_a.name %></p>
+                  </div>
+
+                  <!-- Relationship Info -->
+                  <div class="relationship-info">
+                    <p class="relationship-type"><%= relationship.relationship_type %></p>
+                    <% if relationship.directionality == 1 %>
+                      <div class="arrow">→</div>
+                    <% elsif relationship.directionality == 2 %>
+                      <div class="arrow">⇄</div>
+                    <% end %>
+                  </div>
+
+                  <!-- Character B -->
+                  <div class="character">
+                    <%= image_tag relationship.character_b.icon, class: "rounded-full" if relationship.character_b.icon.attached? %>
+                    <p><%= relationship.character_b.name %></p>
+                  </div>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p>関係データがありません</p>
+          <% end %>
+
           <%= link_to "編集", edit_comic_relationship_group_path(@comic, relationship_group) %>
           <%= button_to "削除", comic_relationship_group_path(@comic, relationship_group),
               method: :delete, data: { confirm: "本当に削除しますか？" }, class: "delete-button" %>
-        <% end %>
+        </li>
       <% end %>
-    </ul>
-  <% else %>
-    <p>まだ相関図がありません。</p>
-  <% end %>
+    <% end %>
+  </ul>
+<% else %>
+  <p>まだ相関図がありません。</p>
+<% end %>

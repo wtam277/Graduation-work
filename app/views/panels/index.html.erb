@@ -4,93 +4,93 @@
 
 <p>＜起＞: <%= comic.story_parts.where(part_type: 0).order(created_at: :desc).first&.content || "なし" %></p>
 
-<h1>簡易4コマパネル作成</h1>
 
-<%= form_with(model: [@comic, @panel], url: @panel.persisted? ? comic_panel_path(@comic, @panel) : comic_panels_path(@comic), method: @panel.persisted? ? :patch : :post, local: true, multipart: true) do |f| %>
-  <div>
-    <%= f.label :location, "ロケーション" %>
-    <%= f.text_field :location %>
-  </div>
+<% (1..4).each_slice(1) do |group| %>
+  <div class="storage-container">
+    <% group.each do |position| %>
+      <% panel = @comic.panels.find_by(position: position) %>
+      <div class="storage-box">
+        <div class="position-number"><%= position %></div>
+        <div class="panel-content">
+          <% if panel.present? %>
+            <!--  Location を1行にして「・」を削除 -->
+            <% if panel.locations.any? %>
+              <p><strong>ロケーション：</strong> <%= panel.locations.map(&:location_name).join(", ") %></p>
+            <% else %>
+              <p>ロケーション情報なし</p>
+            <% end %>
 
-  <%= f.hidden_field :position, value: 0 %>
+            <!-- セリフの表示 -->
+            <% if panel.speeches.any? %>
+            
+            <% panel.speeches.order(:position).each do |speech| %>
+              <p>
+                <% if speech.character&.icon&.attached? %>
+                  <%= image_tag url_for(speech.character.icon), size: "30x30", alt: "キャラアイコン", style: "vertical-align: middle; margin-right: 8px;" %>
+                <% end %>
+                <strong><%= speech.character.name if speech.character %>:</strong>
+                <%= speech.content %>
+              </p>
+            <% end %>
+          <% else %>
+            <p>セリフはまだありません</p>
+          <% end %>
 
-
-<!-- キャラクター一覧表示 -->
-<div id="character-fields">
-  <div class="character-field">
-    <%= f.label :character_ids, "キャラクターを選択" %>
-    <select class="character-select" name="panel[character_ids][]" onchange="updateCharacter(this)">
-  <option value="">キャラクターを選択</option>
-  <% @characters.each do |character| %>
-    <option value="<%= character.id %>" data-icon="<%= url_for(character.icon) if character.icon.attached? %>"
-      <%= "selected" if @panel.characters.include?(character) %>>
-      <%= character.name %>
-    </option>
-  <% end %>
-</select>
-
-    <!-- キャラクターアイコン -->
-    <div class="character-info">
-      <img src="" alt="キャラクター画像" class="character-preview" style="display: none; width: 100px; height: 100px;">
-      
-      <!-- 吹き出し (SMS風の入力) -->
-      <div class="speech-bubble" style="display: none;">
-        <%= f.text_field :speech_contents, name: "panel[speech_contents][]", placeholder: "セリフを入力..." %>
+            <%= link_to "編集", edit_comic_panel_path(@comic, panel), class: "edit-button" %>
+          <% else %>
+            <!-- パネル未作成 -->
+            <p>まだ作成していません</p>
+            <%= link_to "新規作成", new_comic_panel_path(@comic, position: position), class: "create-button" %>
+          <% end %>
+        </div>
       </div>
-    </div>
+    <% end %>
   </div>
-</div>
-
-<!-- キャラクター追加ボタン -->
-<button type="button" id="add-character" class="add-button">+ キャラクター追加</button>
-
-<!-- パネル作成ボタン -->
-<%= f.submit "パネルを作成" %>
-
 <% end %>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const addButton = document.getElementById("add-character");
-    const characterFields = document.getElementById("character-fields");
-
-    // キャラクター追加ボタンの処理
-    addButton.addEventListener("click", function() {
-      const newField = document.querySelector(".character-field").cloneNode(true);
-
-      // 新しく追加した要素の初期化
-      newField.querySelector(".character-preview").src = "";
-      newField.querySelector(".character-preview").style.display = "none";
-      newField.querySelector(".speech-bubble").style.display = "none";
-      newField.querySelector("select").value = "";
-      newField.querySelector("input[type='text']").value = "";
-
-      characterFields.appendChild(newField);
-    });
-
-    // キャラクター選択時にアイコン＆吹き出しを表示
-    window.updateCharacter = function(select) {
-      const selectedOption = select.options[select.selectedIndex];
-      const iconUrl = selectedOption.getAttribute("data-icon");
-      const imageTag = select.parentElement.querySelector(".character-preview");
-      const speechBubble = select.parentElement.querySelector(".speech-bubble");
-
-      if (iconUrl) {
-        imageTag.src = iconUrl;
-        imageTag.style.display = "block";
-        speechBubble.style.display = "block"; // 吹き出しを表示
-      } else {
-        imageTag.src = "";
-        imageTag.style.display = "none";
-        speechBubble.style.display = "none"; // 吹き出しを非表示
-      }
-    };
-  });
-</script>
-
-
 
 <p>＜承＞: <%= comic.story_parts.where(part_type: 1).order(created_at: :desc).first&.content || "なし" %></p>
 <p>＜転＞: <%= comic.story_parts.where(part_type: 2).order(created_at: :desc).first&.content || "なし" %></p>
 <p>＜結＞: <%= comic.story_parts.where(part_type: 3).order(created_at: :desc).first&.content || "なし" %></p>
 
+
+<style>
+.storage-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.storage-box {
+  position: relative;
+  background-color: #6bb7ff; /* 青背景 */
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  height: 170px;
+}
+
+.position-number {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #a8e6cf; /* 緑 */
+  padding: 5px 10px;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.panel-content {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.create-button {
+  display: block;
+  margin: 10px auto;
+  background-color: gray;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+}
+</style>

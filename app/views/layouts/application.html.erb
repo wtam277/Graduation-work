@@ -12,7 +12,7 @@
   </head>
 
   <body>
-    <% if ["story_maps", "story_parts", "characters", "panels","pages","relationship_groups"].include?(controller_name) && ["index", "show", "edit"].include?(action_name) %>
+    <% if ["story_maps", "story_parts", "characters", "panels","pages","relationship_groups"].include?(controller_name) && ["index","new", "show", "edit"].include?(action_name) %>
       <%= render "shared/header" %>
     <% end %>
 
@@ -20,7 +20,7 @@
       <%= yield %> <!-- 各ビューのコンテンツをここに描画 -->
     </main>
 
-    <% if ["story_maps", "story_parts", "characters", "panels","pages","relationship_groups"].include?(controller_name) && ["index", "show", "edit"].include?(action_name) %>
+    <% if ["story_maps", "story_parts", "characters", "panels","pages","relationship_groups"].include?(controller_name) && ["index","new", "show", "edit"].include?(action_name) %>
       <%= render "shared/footer" %>
     <% end %>
   </body>
