@@ -2,7 +2,7 @@ class WorksController < ApplicationController
   # ログインを必須の状態にする
   before_action :authenticate_user!, only: [:new, :create]  
   def index
-    @comics = Comic.all  # 全ての作品を取得
+    @comics = current_user.comics
   end
 
   def show
