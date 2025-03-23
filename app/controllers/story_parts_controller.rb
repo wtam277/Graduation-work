@@ -35,9 +35,23 @@ class StoryPartsController < ApplicationController
   end
 
   def update_note
+    note = @comic.stiky_notes.find_by(id: params[:id])
+    if note.nil?
+      render json: { error: "付箋が見つかりません" }, status: :not_found
+      return
+    end
+
+  def destroy_note
     note = @comic.stiky_notes.find(params[:id])
-    note.update!(stiky_note_params)
-    render json: note
+    note.destroy!
+    head :no_content
+  end
+  
+    if note.update(stiky_note_params)
+      render json: { id: note.id, note_content: note.note_content, position_x: note.position_x, position_y: note.position_y }
+    else
+      render json: { error: note.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   def update
@@ -57,6 +71,9 @@ class StoryPartsController < ApplicationController
   
     # index にリダイレクト
     redirect_to comic_story_parts_path(@comic), notice: "ストーリー部分を更新しました！"
+  end
+
+  def destroy
   end
 
   private

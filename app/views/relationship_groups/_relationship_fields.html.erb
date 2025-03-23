@@ -1,29 +1,31 @@
-<div class="relationship-block">
+<div class="relationship-field">
   <h3>関係設定</h3>
 
-  <% if f %>
-  <div class="character-field">
-    <%= f.label :character_a_id, "キャラクターを選択 (1人目)" %>
-    <%= f.select :character_a_id, options_from_collection_for_select(characters, :id, :name), { include_blank: "キャラクターを選択" }, { class: "character-select" } %>
+  <div>
+    <label>キャラクターを選択（1人目）</label><br>
+    <%= f.select :character_a_id,
+      options_from_collection_for_select(characters, :id, :name, f.object.character_a_id),
+      prompt: "キャラクターを選択" %>
   </div>
 
-  <div class="character-field">
-    <%= f.label :directionality, "関係の向き" %>
-    <%= f.select :directionality, [["→", 1], ["⇄", 2]], { include_blank: "関係の向きを選択" }, { class: "directionality-select" } %>
+  <div>
+    <label>関係の向き</label><br>
+    <%= f.select :directionality, [["→", 1], ["⇄", 2]],
+      prompt: "関係の向きを選択",
+      selected: f.object.directionality %>
   </div>
 
-  <div class="character-field">
-    <%= f.label :relationship_type, "関係の種類" %>
+  <div>
+    <label>関係の種類</label><br>
     <%= f.text_field :relationship_type, placeholder: "例: 友達, 兄弟, 師弟" %>
   </div>
 
-  <div class="character-field">
-    <%= f.label :character_b_id, "キャラクターを選択 (2人目)" %>
-    <%= f.select :character_b_id, options_from_collection_for_select(characters, :id, :name), { include_blank: "キャラクターを選択" }, { class: "character-select" } %>
+  <div>
+    <label>キャラクターを選択（2人目）</label><br>
+    <%= f.select :character_b_id,
+      options_from_collection_for_select(characters, :id, :name, f.object.character_b_id),
+      prompt: "キャラクターを選択" %>
   </div>
 
-  <!-- 削除ボタン -->
-  <button type="button" class="remove-relationship-button">削除</button>
-<% else %>
-  <p style="color: red;">エラー: `f` が渡されていません</p>
-<% end %>
+  <button type="button" class="remove-relationship">削除</button>
+</div>

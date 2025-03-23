@@ -8,6 +8,7 @@ class PanelsController < ApplicationController
     @panels = @comic.panels || []  
     @panel = @comic.panels.last || @comic.panels.build 
     @characters = @comic.characters
+    @stiky_notes = @comic.stiky_notes.where(notable_type: "panel")|| []
   end
 
   def new
@@ -20,59 +21,66 @@ class PanelsController < ApplicationController
   def create
     @comic = Comic.find(params[:comic_id])
     
-    # `position` ごとの `Panel` を 1 つしか作らないようにする
     existing_panel = @comic.panels.find_by(position: panel_params[:position])
-    
     if existing_panel
       redirect_to new_comic_panel_path(@comic, position: panel_params[:position]), alert: "このポジションにはすでにパネルが存在します。"
       return
     end
-    
-    # `Panel` を作成
-    @panel = @comic.panels.create(panel_params)
-    
-    if @panel.persisted? # 🎯 `save` の代わりに `create` を使うことで保存確認
-      # 🎯 Location を手動で保存する
-      if params[:panel][:locations].present?
-        Array.wrap(params[:panel][:locations]).each do |location_params|
-          @panel.locations.create!(location_name: location_params[:location_name])
-        end
-      end
-    
-      # 🎯 セリフを保存する
-      if params[:panel][:speeches].present?
-        Array.wrap(params[:panel][:speeches]).each_with_index do |speech_params, index|
-          @panel.speeches.create!(
-            character_id: speech_params[:character_id],
-            content: speech_params[:content],
-            position: speech_params[:position] || index + 1 # 🔥 `position` を設定
-          )
-        end
-      end
-    
-      redirect_to comic_panel_path(@comic, @panel), notice: "パネルが作成されました！"
+  
+    @panel = @comic.panels.new(panel_params)
+  
+    if @panel.save
+      flash[:notice] = "パネルが作成されました！"
+      redirect_to comic_panel_path(@comic, @panel)
     else
-      @characters = @comic.characters # エラー時のためにキャラクターリストを取得
+      flash[:alert] = " 保存失敗: #{@panel.errors.full_messages.join(', ')}"  # エラーメッセージを flash[:alert] にセット
+      @characters = @comic.characters
       render :new, status: :unprocessable_entity
     end
   end
   
   def edit
-    @panel = @comic.panels.find(params[:id])
+    @comic = Comic.find(params[:comic_id])
+    @panel = @comic.panels.find(params[:id]) # ✅ Panel を取得
     @characters = @comic.characters
-    @panel.speeches.build while @panel.speeches.size < 2
-    @panel.locations.build if @panel.locations.empty?
+    @panel.speeches.build if @panel.speeches.empty? # 編集時に speech フォームが空にならないように
   end
-
 
   def update
     if @panel.update(panel_params)
-      redirect_to comic_panels_path(@comic), notice: "パネルを更新しました！"
+      redirect_to comic_panels_path(@comic), notice: "概要を更新しました！"
     else
-      @characters = @comic.characters
-      render :edit, status: :unprocessable_entity
+      @panels = @comic.panels  
+      render :index
     end
   end
+
+  def create_note
+    note = @comic.stiky_notes.create!(
+      notable_type: "panel",
+      note_content: params[:stiky_note][:note_content],
+      position_x: params[:stiky_note][:position_x],
+      position_y: params[:stiky_note][:position_y]
+    )
+
+    render json: note
+  end
+
+  def update_note
+    note = @comic.stiky_notes.find_by(id: params[:id])
+    if note.nil?
+      render json: { error: "付箋が見つかりません" }, status: :not_found
+      return
+    end
+  end
+
+  def destroy_note
+    note = @comic.stiky_notes.find(params[:id])
+    note.destroy!
+    head :no_content
+  end
+
+  private
 
   def set_comic
     @comic = Comic.find(params[:comic_id])
@@ -89,8 +97,12 @@ class PanelsController < ApplicationController
   def panel_params
     params.require(:panel).permit(
       :position,
-      locations_attributes: [:location_name],
-      speeches_attributes: [:character_id, :content, :position] # 🔥 `position` を追加
+      locations_attributes: [:id, :location_name, :_destroy],
+      speeches_attributes: [:id, :character_id, :content, :position, :_destroy] # 🔥 id と _destroy を追加
     )
+  end
+  
+  def stiky_note_params
+    params.require(:stiky_note).permit(:note_content, :position_x, :position_y)
   end
 end

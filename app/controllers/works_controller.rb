@@ -16,7 +16,8 @@ class WorksController < ApplicationController
   def create
     @comic = current_user.comics.build(comic_params)
     if @comic.save
-      redirect_to works_path, notice: '作品を追加しました！'
+      flash[:notice] = "作成されました！"
+      redirect_to works_path
     else
       render :new
     end

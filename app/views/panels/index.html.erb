@@ -4,6 +4,21 @@
 
 <p>＜起＞: <%= comic.story_parts.where(part_type: 0).order(created_at: :desc).first&.content || "なし" %></p>
 
+<div class="note-button">
+  <button type="button" class="add-note" data-comic-id="<%= @comic.id %>" data-notable-type="panel">＋</button>
+</div>
+
+<!-- 付箋のコンテナ -->
+<div id="note-container">
+<% @stiky_notes.each do |note| %>
+  <div class="note"
+       style="left: <%= note.position_x %>px; top: <%= note.position_y %>px;"
+       data-id="<%= note.id %>"
+       data-comic-id="<%= @comic.id %>">
+    <textarea oninput="updateNoteContent(this)"><%= note.note_content %></textarea>
+  </div>
+<% end %>
+</div>
 
 <% (1..4).each_slice(1) do |group| %>
   <div class="storage-container">
@@ -13,7 +28,7 @@
         <div class="position-number"><%= position %></div>
         <div class="panel-content">
           <% if panel.present? %>
-            <!--  Location を1行にして「・」を削除 -->
+            <!--  Location -->
             <% if panel.locations.any? %>
               <p><strong>ロケーション：</strong> <%= panel.locations.map(&:location_name).join(", ") %></p>
             <% else %>
@@ -62,11 +77,14 @@
 
 .storage-box {
   position: relative;
-  background-color: #6bb7ff; /* 青背景 */
+  background-color: #6bb7ff;
   padding: 20px;
   border-radius: 10px;
   width: 300px;
   height: 170px;
+
+  /* 👇追加：ボックス間に余白を作る */
+  margin-bottom: 10px;
 }
 
 .position-number {
@@ -92,5 +110,57 @@
   padding: 10px;
   text-align: center;
   border-radius: 5px;
+}
+
+.note-button {
+  width: 50px;
+  text-align: center;
+}
+
+.add-note {
+  background-color: #ffcc00;
+  border: none;
+  font-size: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.note {
+  width: 150px;
+  height: 100px;
+  background-color: yellow;
+  position: absolute;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  border: 1px solid #ccc;
+  padding: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.note textarea {
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding-top: 20px;
+  background: transparent;
+  font-size: 14px;
+  resize: none;
+  outline: none;
+  text-align: left;
+}
+
+.delete-note-btn {
+  position: absolute;
+  top: 2px;
+  right: 5px;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  cursor: pointer;
+  color: black;
 }
 </style>

@@ -1,106 +1,176 @@
-<%= form_with(model: [@comic, @relationship_group], url: comic_relationship_groups_path(@comic), local: true) do |f| %>
-    <div class="character-field">
-      <%= f.label :group_name, "キャラクター相関図名：" %>
-      <%= f.text_field :group_name %>
-    </div>
-  
-    <% @relationship_group.relationships.build if @relationship_group.relationships.empty? %>
-    <%= f.fields_for :relationships do |rf| %>
-      <div class="character-field">
-        <%= rf.label :character_a_id, "キャラクターを選択 (1人目)" %>
-        <%= rf.select :character_a_id, options_from_collection_for_select(@characters, :id, :name), { include_blank: "キャラクターを選択" }, { id: "character-select-1", class: "character-select", onchange: "filterCharacters()" } %>
-      </div>
-  
-      <div class="character-field">
-        <%= rf.label :directionality, "関係の向き" %>
-        <%= rf.select :directionality, [["→", 1], ["⇄", 2]], { include_blank: "関係の向きを選択" }, { id: "directionality-select", class: "directionality-select" } %>
-      </div>
-  
-      <div class="character-field">
-        <%= rf.label :relationship_type, "関係の種類" %>
-        <%= rf.text_field :relationship_type, placeholder: "例: 友達, 兄弟, 師弟" %>
-      </div>
-  
-      <div class="character-field">
-        <%= rf.label :character_b_id, "キャラクターを選択 (2人目)" %>
-        <%= rf.select :character_b_id, options_from_collection_for_select(@characters, :id, :name), { include_blank: "キャラクターを選択" }, { id: "character-select-2", class: "character-select" } %>
-      </div>
-    <% end %>
-  
-    <div>
-      <%= f.submit "作成" %>
-    </div>
-  <% end %>
-  <script>
-    function filterCharacters() {
-      const select1 = document.getElementById("character-select-1");
-      const select2 = document.getElementById("character-select-2");
-      const selectedValue = select1.value;
-  
-      // すべてのオプションを有効化
-      Array.from(select2.options).forEach(option => {
-        option.hidden = false;
-      });
-  
-      // 1つ目の選択キャラクターを2つ目から除外
-      if (selectedValue) {
-        const optionToDisable = select2.querySelector(`option[value="${selectedValue}"]`);
-        if (optionToDisable) {
-          optionToDisable.hidden = true;
-        }
-      }
-    }
-  </script>
-  
-  <h2>相関図一覧</h2>
-<%= link_to "新規作成", new_comic_relationship_group_path(@comic) %>
-
-<% if @relationship_groups.present? && @relationship_groups.any? %>
+<h2>相関図一覧</h2>
+<%= link_to '新規作成', new_comic_relationship_group_path(@comic), class: "new-btn" %>
+<% if @relationship_groups.present? %>
   <ul>
-    <% @relationship_groups.each do |relationship_group| %> 
-      <% if relationship_group.id.present? %>
-        <li>
-          <strong>相関図名:</strong> <%= relationship_group.group_name %>
-          
-          <% if relationship_group.relationships.any? %>
-            <ul>
-              <% relationship_group.relationships.each do |relationship| %>
-                <li class="relationship-item">
-                  <!-- Character A -->
-                  <div class="character">
-                    <%= image_tag relationship.character_a.icon, class: "rounded-full" if relationship.character_a.icon.attached? %>
-                    <p><%= relationship.character_a.name %></p>
-                  </div>
+    <% @relationship_groups.each do |group| %>
+      <li>
+        <strong>相関図名:</strong> <%= group.group_name %>
+        <%= link_to '編集', edit_comic_relationship_group_path(@comic, group), class: "edit-btn" %>
+        <%= link_to '削除', comic_relationship_group_path(@comic, group),
+            data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" },
+            class: "delete-btn" %>
 
-                  <!-- Relationship Info -->
-                  <div class="relationship-info">
-                    <p class="relationship-type"><%= relationship.relationship_type %></p>
-                    <% if relationship.directionality == 1 %>
-                      <div class="arrow">→</div>
-                    <% elsif relationship.directionality == 2 %>
-                      <div class="arrow">⇄</div>
-                    <% end %>
-                  </div>
+        <% characters = group.relationships.flat_map { |r| [r.character_a, r.character_b] }.uniq %>
 
-                  <!-- Character B -->
-                  <div class="character">
-                    <%= image_tag relationship.character_b.icon, class: "rounded-full" if relationship.character_b.icon.attached? %>
-                    <p><%= relationship.character_b.name %></p>
-                  </div>
-                </li>
-              <% end %>
-            </ul>
-          <% else %>
-            <p>関係データがありません</p>
-          <% end %>
+        <% if characters.size == 2 %>
+          <% rel = group.relationships.first %>
+          <div class="diagram-box two">
+            <div class="char-box left">
+              <%= image_tag rel.character_a.icon, class: "icon" if rel.character_a.icon.attached? %>
+              <div><%= rel.character_a.name %></div>
+            </div>
 
-          <%= link_to "編集", edit_comic_relationship_group_path(@comic, relationship_group) %>
-          <%= button_to "削除", comic_relationship_group_path(@comic, relationship_group),
-              method: :delete, data: { confirm: "本当に削除しますか？" }, class: "delete-button" %>
-        </li>
-      <% end %>
+            <div class="relation-info">
+              <div class="arrow-text">
+                <%= rel.directionality == 1 ? "→" : "⇄" %>
+                <%= rel.relationship_type %>
+              </div>
+            </div>
+
+            <div class="char-box right">
+              <%= image_tag rel.character_b.icon, class: "icon" if rel.character_b.icon.attached? %>
+              <div><%= rel.character_b.name %></div>
+            </div>
+          </div>
+
+        <% elsif characters.size == 3 %>
+          <div class="diagram-box three">
+            <div class="char-box char-top-left">
+              <%= image_tag characters[0].icon, class: "icon" if characters[0].icon.attached? %>
+              <div><%= characters[0].name %></div>
+            </div>
+
+            <div class="char-box char-top-right">
+              <%= image_tag characters[1].icon, class: "icon" if characters[1].icon.attached? %>
+              <div><%= characters[1].name %></div>
+            </div>
+
+            <div class="char-box char-bottom">
+              <%= image_tag characters[2].icon, class: "icon" if characters[2].icon.attached? %>
+              <div><%= characters[2].name %></div>
+            </div>
+
+            <% group.relationships.each do |rel| %>
+              <% from = rel.character_a.name %>
+              <% to = rel.character_b.name %>
+              <% type = rel.relationship_type %>
+              <% direction = rel.directionality == 1 ? "→" : "⇄" %>
+
+              <% relation_class =
+                  if from == characters[0].name && to == characters[1].name
+                    "arrow top-left-to-top-right"
+                  elsif from == characters[2].name && to == characters[0].name
+                    "arrow bottom-to-top-left"
+                  elsif from == characters[2].name && to == characters[1].name
+                    "arrow bottom-to-top-right"
+                  else
+                    "arrow custom"
+                  end %>
+
+              <div class="<%= relation_class %>">
+                <span><%= "#{direction} #{type}" %></span>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </li>
     <% end %>
   </ul>
 <% else %>
-  <p>まだ相関図がありません。</p>
+  <p>相関図がまだ登録されていません。</p>
 <% end %>
+
+<style>
+.diagram-box {
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #99d2f2;
+  position: relative;
+  min-height: 200px;
+  max-width: 400px;
+  /* 中央寄せを削除 → 左揃いに */
+}
+
+/* キャラクター共通スタイル */
+.char-box {
+  text-align: center;
+  font-weight: bold;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* ==== 2人用 ==== */
+.diagram-box.two {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.diagram-box.two .relation-info {
+  text-align: center;
+}
+
+.arrow-text {
+  font-size: 16px;
+}
+
+/* ==== 3人用 ==== */
+.diagram-box.three {
+  position: relative;
+  height: 220px;
+}
+
+.char-box.char-top-left {
+  position: absolute;
+  top: 10px;
+  left: 10%;
+}
+
+.char-box.char-top-right {
+  position: absolute;
+  top: 10px;
+  right: 10%;
+}
+
+.char-box.char-bottom {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.arrow {
+  position: absolute;
+  font-size: 14px;
+  font-weight: bold;
+  color: #000;
+}
+
+.arrow.top-left-to-top-right {
+  top: 25px;
+  left: 42%;
+}
+
+.arrow.bottom-to-top-left {
+  bottom: 60px;
+  left: 25%;
+}
+
+.arrow.bottom-to-top-right {
+  bottom: 60px;
+  right: 25%;
+}
+
+.arrow.custom {
+  bottom: 100px;
+  left: 20%;
+  color: red ;
+  transform: translateX(-50%);
+}
+</style>

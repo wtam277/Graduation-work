@@ -1,29 +1,29 @@
 <%= form_with(model: [@comic, @relationship_group], url: comic_relationship_groups_path(@comic), local: true) do |f| %>
-    <div class="character-field">
-      <%= f.label :group_name, "キャラクター相関図名：" %>
-      <%= f.text_field :group_name %>
-    </div>
+  <div class="character-field">
+    <%= f.label :group_name, "キャラクター相関図名：" %>
+    <%= f.text_field :group_name %>
+  </div>
 
-    <!-- Relationshipのフォームを追加するコンテナ -->
-    <div id="relationships-container">
-      <% @relationship_group.relationships.each do |relationship| %>
-        <%= render 'relationship_groups/relationship_fields', f: f, relationship: relationship, characters: @characters %>
+  <div id="relationships-container">
+    <% @relationship_group.relationships.each_with_index do |relationship, index| %>
+      <%= f.fields_for :relationships, relationship do |rf| %>
+        <%= render 'relationship_groups/relationship_fields', f: rf, characters: @characters %>
       <% end %>
-    </div>
-
-    <!-- 追加ボタン -->
-    <button type="button" id="add-relationship-button">+ 関係を追加</button>
-
-    <div>
-      <%= f.submit "作成" %>
-    </div>
-
-    <!-- Hidden template for new relationships -->
-    <template id="relationship-template">
-    <div id="relationship-template" style="display: none;">
-    <% f.fields_for :relationships, Relationship.new do |rf| %>
-      <%= render 'relationship_groups/relationship_fields', f: rf, characters: @characters %>
     <% end %>
   </div>
-    </template>
+
+  <!-- 追加ボタン -->
+  <button type="button" id="add-relationship-button">+ 関係を追加</button>
+
+  <!-- 作成ボタン -->
+  <div>
+    <%= f.submit "作成" %>
+  </div>
 <% end %>
+
+<!-- JS用テンプレート（fを使わず直接生成したHTML） -->
+<div id="relationship-template" style="display: none;">
+  <% new_relationship = @relationship_group.relationships.build %>
+  <% form_builder = ActionView::Helpers::FormBuilder.new("relationship_group[relationships_attributes][NEW_INDEX]", Relationship.new, self, {}) %>
+  <%= render 'relationship_groups/relationship_fields', f: form_builder, characters: @characters %>
+</div>

@@ -1,2 +1,29 @@
-<p>確認用</p>
-<%= debug @relationship %>
+<%= form_with(model: [@comic, @relationship_group], local: true) do |f| %>
+    <div class="character-field">
+      <%= f.label :group_name, "キャラクター相関図名：" %>
+      <%= f.text_field :group_name %>
+    </div>
+  
+    <div id="relationships-container">
+      <% @relationship_group.relationships.each_with_index do |relationship, index| %>
+        <%= f.fields_for :relationships, relationship do |rf| %>
+          <%= render 'relationship_groups/relationship_fields', f: rf, characters: @characters %>
+        <% end %>
+      <% end %>
+    </div>
+  
+    <!-- 追加ボタン -->
+    <button type="button" id="add-relationship-button">+ 関係を追加</button>
+  
+    <!-- 作成ボタン -->
+    <div>
+      <%= f.submit "更新" %>
+    </div>
+  <% end %>
+  
+  <!-- JS用テンプレート（fを使わず直接生成したHTML） -->
+  <div id="relationship-template" style="display: none;">
+    <% new_relationship = @relationship_group.relationships.build %>
+    <% form_builder = ActionView::Helpers::FormBuilder.new("relationship_group[relationships_attributes][NEW_INDEX]", Relationship.new, self, {}) %>
+    <%= render 'relationship_groups/relationship_fields', f: form_builder, characters: @characters %>
+  </div>

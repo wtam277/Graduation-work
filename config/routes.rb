@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   #storymapをcomicsモデルに紐付けする
   resources :comics do
     resources :story_maps, only: [:index, :create, :update] 
-    resources :story_parts, only: [:index, :create, :update] 
+    resources :story_parts, only: [:index, :create, :update, :destroy] 
     resources :characters, only: [:index, :create, :update, :edit]
     resources :panels, only: [:index, :new, :create, :update, :edit]
     resources :relationship_groups, only: [:index, :new, :create, :update, :edit, :destroy]
@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       end
       member do
         patch :update, to: "story_parts#update_note"
+        delete :destroy, to: "story_parts#destroy_note"
       end
     end
   end

@@ -28,19 +28,25 @@ class RelationshipGroupsController < ApplicationController
   end
 
   def edit
+    @characters = @comic.characters
+    @relationship_group = @comic.relationship_groups.find(params[:id])
+  end
+  
+  def update
+    @relationship_group = @comic.relationship_groups.find(params[:id])
+    if @relationship_group.update(relationship_group_params)
+      redirect_to comic_relationship_groups_path(@comic), notice: "相関図を更新しました！"
+    else
+      @characters = @comic.characters
+      render :edit
+    end
   end
 
-  def destroy
-    @relationship_group = @comic.relationship_groups.find(params[:id])
-  
-    # 関連する relationships を削除
-    @relationship_group.relationships.destroy_all
-  
-    # relationship_group を削除
-    @relationship_group.destroy
-  
-    redirect_to comic_relationship_groups_path(@comic), notice: "相関図が削除されました！"
-  end
+    def destroy
+      @relationship_group = @comic.relationship_groups.find(params[:id])
+      @relationship_group.destroy
+      redirect_to comic_relationship_groups_path(@comic), notice: "相関図が削除されました！"
+    end
 
   private
 

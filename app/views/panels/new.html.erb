@@ -16,32 +16,32 @@
   
     <!-- キャラクターとセリフの入力フィールド -->
     <div id="character-speeches-container">
-      <% @panel.speeches = Array.new(2) { @panel.speeches.build } if @panel.speeches.empty? %>
-  
+      <% @panel.speeches.build while @panel.speeches.size < 2 %> <!-- 必ず2つの Speech フィールドを生成 -->
+
       <%= f.fields_for :speeches do |sf| %>
         <div class="speech-block">
           <%= sf.hidden_field :panel_id, value: @panel.id %>
           <%= sf.hidden_field :position, value: sf.object.position || 1 %>
   
           <%= sf.label :character_id, "キャラクター" %>
-          <select class="character-select" name="<%= sf.object_name %>[character_id]" onchange="updateCharacter(this)">
-            <option value="">キャラクターを選択</option>
-            <% @characters.each do |character| %>
-              <option value="<%= character.id %>"
-                      data-icon="<%= character.icon.attached? ? url_for(character.icon) : '' %>"
-                      <%= 'selected' if sf.object.character_id == character.id %>>
-                <%= character.name %>
-              </option>
-            <% end %>
-          </select>
-
-<!-- キャラクターアイコン -->
-<div class="character-info">
-  <img src="" alt="キャラクター画像" class="character-preview" style="display: none; width: 50px; height: 50px;">
-</div>
+<select class="character-select" name="<%= sf.object_name %>[character_id]" onchange="updateCharacter(this)">
+  <option value="">キャラクターを選択</option>
+  <% @characters.each do |character| %>
+    <option value="<%= character.id %>"
+            data-icon="<%= character.icon.attached? ? url_for(character.icon) : '' %>"
+            <%= 'selected' if sf.object.character_id == character.id %>>
+      <%= character.name %>
+    </option>
+  <% end %>
+</select>
+  
+          <!-- キャラクターアイコン -->
+          <div class="character-info">
+            <img src="" alt="キャラクター画像" class="character-preview" style="display: none; width: 50px; height: 50px;">
+          </div>
   
           <!-- セリフ入力 -->
-          <%= sf.text_field :content, placeholder: "セリフを入力..." %>
+          <%= sf.text_field :content, placeholder: "セリフを入力..." %> <!-- ✅ `required: true` を削除 -->
         </div>
       <% end %>
     </div>

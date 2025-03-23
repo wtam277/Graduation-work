@@ -2,3 +2,4 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import "relationship_fields"
+import "./stiky_notes"

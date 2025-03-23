@@ -4,5 +4,6 @@ class Panel < ApplicationRecord
     has_many :characters, through: :speeches
     has_many :locations, dependent: :destroy
     accepts_nested_attributes_for :locations, allow_destroy: true
-    accepts_nested_attributes_for :speeches
+    #speechフォームが空でも入力できるようにした
+    accepts_nested_attributes_for :speeches, allow_destroy: true, reject_if: proc { |attributes| attributes['character_id'].blank? && attributes['content'].blank? } 
 end

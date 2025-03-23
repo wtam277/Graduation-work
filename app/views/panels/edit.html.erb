@@ -1,29 +1,70 @@
-<%= form_with(model: [@comic, @relationship_group], url: comic_relationship_groups_path(@comic), local: true) do |f| %>
-    <div class="character-field">
-      <%= f.label :group_name, "キャラクター相関図名：" %>
-      <%= f.text_field :group_name %>
-    </div>
+<%= form_with(model: [@comic, @panel], url: @panel.persisted? ? comic_panel_path(@comic, @panel) : comic_panels_path(@comic), method: @panel.persisted? ? :patch : :post, local: true, multipart: true) do |f| %>
 
-    <!-- Relationshipのフォームを追加するコンテナ -->
-    <div id="relationships-container">
-      <% @relationship_group.relationships.each do |relationship| %>
-        <%= render 'relationship_groups/relationship_fields', f: f, relationship: relationship, characters: @characters %>
+    <!-- Location の入力フィールド -->
+    <div id="location-container">
+      <% @panel.locations.build if @panel.locations.empty? %>
+      <%= f.fields_for :locations do |lf| %>
+        <div class="location-block">
+          <%= lf.hidden_field :panel_id, value: @panel.id %>
+          <%= lf.label :location_name, "ロケーション名" %>
+          <%= lf.text_field :location_name, placeholder: "ロケーション名を入力..." %>
+        </div>
       <% end %>
     </div>
+  
+    <%= f.hidden_field :position, value: @panel.position %>
+  
+    <!-- キャラクターとセリフの入力フィールド -->
+    <div id="character-speeches-container">
+      <% @panel.speeches.build while @panel.speeches.size < 2 %> <!-- 必ず2つの Speech フィールドを生成 -->
 
-    <!-- 追加ボタン -->
-    <button type="button" id="add-relationship-button">+ 関係を追加</button>
-
-    <div>
-      <%= f.submit "作成" %>
+      <%= f.fields_for :speeches do |sf| %>
+        <div class="speech-block">
+          <%= sf.hidden_field :panel_id, value: @panel.id %>
+          <%= sf.hidden_field :position, value: sf.object.position || 1 %>
+  
+          <%= sf.label :character_id, "キャラクター" %>
+<select class="character-select" name="<%= sf.object_name %>[character_id]" onchange="updateCharacter(this)">
+  <option value="">キャラクターを選択</option>
+  <% @characters.each do |character| %>
+    <option value="<%= character.id %>"
+            data-icon="<%= character.icon.attached? ? url_for(character.icon) : '' %>"
+            <%= 'selected' if sf.object.character_id == character.id %>>
+      <%= character.name %>
+    </option>
+  <% end %>
+</select>
+  
+          <!-- キャラクターアイコン -->
+          <div class="character-info">
+            <img src="" alt="キャラクター画像" class="character-preview" style="display: none; width: 50px; height: 50px;">
+          </div>
+  
+          <!-- セリフ入力 -->
+          <%= sf.text_field :content, placeholder: "セリフを入力..." %> <!-- ✅ `required: true` を削除 -->
+        </div>
+      <% end %>
     </div>
-
-    <!-- Hidden template for new relationships -->
-    <template id="relationship-template">
-    <div id="relationship-template" style="display: none;">
-    <% f.fields_for :relationships, Relationship.new do |rf| %>
-      <%= render 'relationship_groups/relationship_fields', f: rf, characters: @characters %>
-    <% end %>
-  </div>
-    </template>
-<% end %>
+  
+    <!-- 送信ボタン -->
+    <%= f.submit "作成" %>
+  <% end %>
+  
+  <!-- JavaScript -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      window.updateCharacter = function (select) {
+        const selectedOption = select.options[select.selectedIndex];
+        const iconUrl = selectedOption.getAttribute("data-icon");
+        const imageTag = select.closest(".speech-block").querySelector(".character-preview");
+  
+        if (iconUrl && iconUrl !== '') {
+          imageTag.src = iconUrl;
+          imageTag.style.display = "block";
+        } else {
+          imageTag.src = "";
+          imageTag.style.display = "none";
+        }
+      };
+    });
+  </script>
