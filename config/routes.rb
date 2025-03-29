@@ -6,23 +6,23 @@ Rails.application.routes.draw do
   get "/works", to: "works#index"
 
 
-  #storymapをcomicsモデルに紐付けする
-  resources :comics do
+  
+  resources :comics, controller: "works" do
     resources :story_maps, only: [:index, :create, :update] 
     resources :story_parts, only: [:index, :create, :update, :destroy] 
-    resources :characters, only: [:index, :create, :update, :edit]
-    resources :panels, only: [:index, :new, :create, :update, :edit]
+    resources :characters, only: [:index, :new, :create, :update, :edit]
+    resources :panels, only: [:index, :new, :create, :update, :edit] 
     resources :relationship_groups, only: [:index, :new, :create, :update, :edit, :destroy]
     resources :pages, only: [:index, :create, :update]
-    resources :stiky_notes, only: [] do
-      collection do
-        post :create, to: "story_parts#create_note"
-      end
-      member do
-        patch :update, to: "story_parts#update_note"
-        delete :destroy, to: "story_parts#destroy_note"
-      end
-    end
+      # stiky_notes (story_part 用)
+    post   "story_parts/stiky_notes",      to: "story_parts#create_note"
+    patch  "story_parts/stiky_notes/:id",  to: "story_parts#update_note"
+    delete "story_parts/stiky_notes/:id",  to: "story_parts#destroy_note"
+
+    # stiky_notes (panel 用)
+    post   "panels/stiky_notes",           to: "panels#create_note"
+    patch  "panels/stiky_notes/:id",       to: "panels#update_note"
+    delete "panels/stiky_notes/:id",       to: "panels#destroy_note"
   end
 
 

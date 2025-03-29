@@ -6,6 +6,11 @@ class CharactersController < ApplicationController
       @character = @comic.characters.build  # 新規作成用インスタンス
       @characters = @comic.characters  # 関連するキャラクターを取得
     end
+
+    def new
+      @character = @comic.characters.build  # 新規作成用インスタンス
+      @characters = @comic.characters  # 関連するキャラクターを取得
+    end
   
     def create
       @character = @comic.characters.build(character_params)

@@ -31,17 +31,18 @@
 
 <!-- 付箋のコンテナ -->
 <div id="note-container">
-  <% @comic.stiky_notes.each do |note| %>
-    <div class="note" 
-         style="left: <%= note.position_x %>px; top: <%= note.position_y %>px;" 
-         data-id="<%= note.id %>" 
-         data-comic-id="<%= @comic.id %>">
-      <textarea oninput="updateNoteContent(this)"><%= note.note_content %></textarea>
-    </div>
-  <% end %>
+<% @stiky_notes.each do |note| %>
+  <div class="note"
+       style="left: <%= note.position_x %>px; top: <%= note.position_y %>px;"
+       data-id="<%= note.id %>"
+       data-comic-id="<%= @comic.id %>">
+    <textarea oninput="updateNoteContent(this)"><%= note.note_content %></textarea>
+  </div>
+<% end %>
 </div>
 
 <style>
+
   .story-part-container {
     display: flex;
     align-items: center;

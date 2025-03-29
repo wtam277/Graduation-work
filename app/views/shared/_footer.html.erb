@@ -1,7 +1,71 @@
-<footer>
-<%= link_to "1", comic_story_maps_path(@comic) %>
-<%= link_to "2", comic_story_parts_path(@comic) %>
-<%= link_to "3", comic_characters_path(@comic) %>
-<%= link_to "4", comic_panels_path(@comic) %>
-<%= link_to "5", comic_pages_path(@comic) %>
+<footer id="page-footer">
+  <div class="nav-item">
+    <%= link_to "1", comic_story_maps_path(@comic), class: "nav-circle #{'active' if controller_name == 'story_maps'}" %>
+    <div class="nav-label">概要</div>
+  </div>
+  <div class="nav-item">
+    <%= link_to "2", comic_story_parts_path(@comic), class: "nav-circle #{'active' if controller_name == 'story_parts'}" %>
+    <div class="nav-label">起承転結</div>
+  </div>
+  <div class="nav-item">
+    <%= link_to "3", comic_characters_path(@comic), class: "nav-circle #{'active' if controller_name == 'characters'}" %>
+    <div class="nav-label">キャラ</div>
+  </div>
+  <div class="nav-item">
+    <%= link_to "4", comic_panels_path(@comic), class: "nav-circle #{'active' if controller_name == 'panels'}" %>
+    <div class="nav-label">簡易4コマ</div>
+  </div>
+  <div class="nav-item">
+    <%= link_to "5", comic_pages_path(@comic), class: "nav-circle #{'active' if controller_name == 'pages'}" %>
+    <div class="nav-label">ページ</div>
+  </div>
 </footer>
+
+<style>
+#page-footer {
+    display: flex;
+    flex-direction: row; /* ← 明示的に横並び */
+    flex-wrap: nowrap;   /* ← 折り返しを防止 */
+    justify-content: flex-start;
+    align-items: center;
+    background-color: #82D8FF;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+  }
+  
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 30px;
+    width: 60px; /* ← 追加（任意） */
+  }
+  
+  .nav-circle {
+    box-sizing: border-box;
+    display: flex; /* ← ここを flex に */
+    justify-content: center;
+    align-items: center;
+    background-color: #22B9FF;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .nav-circle.active {
+    border: 4px solid #0000ff;
+  }
+
+  .nav-label {
+    font-size: 12px;
+    margin-top: 4px;
+    color: #333;
+  }

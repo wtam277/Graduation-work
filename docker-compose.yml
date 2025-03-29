@@ -7,6 +7,7 @@ services:
       - "3000:3000"
     volumes:
       - .:/rails
+      - bundle:/usr/local/bundle
       #- bundle_cache:/rails/vendor/bundle
     depends_on:
       - db
@@ -30,5 +31,6 @@ services:
       
 
 volumes:
+  bundle:
   postgres_data:
   #bundle_cache:

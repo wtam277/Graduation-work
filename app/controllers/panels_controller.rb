@@ -35,7 +35,7 @@ class PanelsController < ApplicationController
     else
       flash[:alert] = " 保存失敗: #{@panel.errors.full_messages.join(', ')}"  # エラーメッセージを flash[:alert] にセット
       @characters = @comic.characters
-      render :new, status: :unprocessable_entity
+      render :index, status: :unprocessable_entity
     end
   end
   
@@ -68,9 +68,10 @@ class PanelsController < ApplicationController
 
   def update_note
     note = @comic.stiky_notes.find_by(id: params[:id])
-    if note.nil?
-      render json: { error: "付箋が見つかりません" }, status: :not_found
-      return
+    if note.update(stiky_note_params)
+      render json: { id: note.id, note_content: note.note_content, position_x: note.position_x, position_y: note.position_y }
+    else
+      render json: { error: note.errors.full_messages }, status: :unprocessable_entity
     end
   end
 

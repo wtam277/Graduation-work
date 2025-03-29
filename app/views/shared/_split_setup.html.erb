@@ -1,0 +1,123 @@
+<!-- オンオフ切り替えボタン -->
+
+<button id="toggle-split-btn">2画面表示ON</button>
+
+
+<!-- 2画面を表示するためのラッパー -->
+<div id="split-wrapper" style="display: none;">
+  <div id="left-pane">
+    <iframe src="<%= request.fullpath %>" frameborder="0"></iframe>
+  </div>
+  <div id="right-pane">
+    <iframe src="<%= comic_story_maps_path(@comic) %>" frameborder="0"></iframe>
+  </div>
+</div>
+
+
+
+
+<style>
+
+  #split-wrapper {
+    height: 90vh;
+    display: flex;
+  }
+
+  #split-wrapper > div {
+    height: 100%;
+  }
+
+  #left-pane, #right-pane {
+    overflow: hidden;
+  }
+
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  .gutter {
+    background-color: #ccc;
+    background-repeat: no-repeat;
+    background-position: 50%;
+  }
+
+  .gutter.gutter-horizontal {
+    cursor: col-resize;
+    width: 8px;
+  }
+
+  .gutter.gutter-vertical {
+    cursor: row-resize;
+    height: 8px;
+  }
+</style>
+
+<script>
+  let splitInstance = null;
+
+  document.addEventListener("turbo:load", () => {
+    const button = document.getElementById("toggle-split-btn");
+    const wrapper = document.getElementById("split-wrapper");
+    const mainContent = document.getElementById("main-content");
+    const pageHeader = document.getElementById("page-header");
+    const pageFooter = document.getElementById("page-footer");
+
+    // 👇 iframe内だったらヘッダーとボタンを非表示にする
+    if (window.self !== window.top) {
+      const header = document.querySelector("header");
+      if (button) button.style.display = "none";
+      if (header) header.style.display = "none";
+      return;
+    }
+
+    // ✅ 分割状態を復元する関数
+    function enableSplitView() {
+      if (wrapper) wrapper.style.display = "flex";
+      if (mainContent) mainContent.style.display = "none";
+      if (pageFooter) pageFooter.style.display = "none";
+      if (pageHeader) pageHeader.style.display = "none";
+      if (button) button.textContent = "2画面表示OFF";
+
+      if (!splitInstance) {
+        splitInstance = Split(['#left-pane', '#right-pane'], {
+          sizes: [50, 50],
+          minSize: 200,
+          gutterSize: 8
+        });
+      }
+    }
+
+    // ✅ 分割を解除する関数
+    function disableSplitView() {
+      if (wrapper) wrapper.style.display = "none";
+      if (mainContent) mainContent.style.display = "block";
+      if (pageHeader) pageHeader.style.display = "block";
+      if (pageFooter) pageFooter.style.display = "block";
+      if (button) button.textContent = "2画面表示ON";
+      
+        location.reload();
+
+      localStorage.setItem("splitViewEnabled", "false");
+    }
+
+    // ✅ 状態に応じて復元
+    const savedState = localStorage.getItem("splitViewEnabled");
+    if (savedState === "true") {
+      enableSplitView();
+    }
+
+    // ✅ ボタンクリックで状態を切り替え
+    button.addEventListener("click", () => {
+      const isCurrentlyEnabled = localStorage.getItem("splitViewEnabled") === "true";
+
+      if (isCurrentlyEnabled) {
+        disableSplitView();
+      } else {
+        enableSplitView();
+        localStorage.setItem("splitViewEnabled", "true");
+      }
+    });
+  });
+</script>

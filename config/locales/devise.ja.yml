@@ -1,0 +1,22 @@
+ja:
+  devise:
+    sessions:
+      new:
+        sign_in: "ログイン"
+      user:
+        signed_in: "ログインしました。"
+        signed_out: "ログアウトしました。"
+      signed_in: "ログインしました。"
+      signed_out: "ログアウトしました。"
+    shared:
+      links:
+        sign_up: "新規登録"
+        forgot_your_password: "パスワードを忘れましたか？"
+    failure:
+      invalid: "メールアドレスまたはパスワードが正しくありません。"
+  helpers:
+    submit:
+      user:
+        create: "登録"
+        update: "更新"
+        session: "ログイン"

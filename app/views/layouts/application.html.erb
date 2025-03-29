@@ -9,12 +9,33 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload", media: "all" %>
     <%= javascript_importmap_tags %>
+
+
+    <!-- works#index用のCSSだけ読み込む -->
+    <% if controller.controller_name == "works" && controller.action_name == "index" %>
+      <%= stylesheet_link_tag "works_index", media: "all", "data-turbo-track": "reload" %>
+    <% end %>
+
+    <!-- panels#index用のCSSだけ読み込む -->
+    <% if controller.controller_name == "panels" && controller.action_name == "index" %>
+      <%= stylesheet_link_tag "panels_index", media: "all", "data-turbo-track": "reload" %>
+    <% end %>
+
+    <!-- pages#index用のCSSだけ読み込む -->
+    <% if controller.controller_name == "pages" && controller.action_name == "index" %>
+      <%= stylesheet_link_tag "pages_index", media: "all", "data-turbo-track": "reload" %>
+    <% end %>
+
+
+
+
   </head>
 
   <body>
     <% if ["story_maps", "story_parts", "characters", "panels","pages","relationship_groups"].include?(controller_name) && ["index","new", "show", "edit"].include?(action_name) %>
-      <%= render "shared/header" %>
+    <%= render "shared/header" %>
     <% end %>
+    
 
     <% if flash[:notice] %>
       <p class="alert alert-success"><%= flash[:notice] %></p>
@@ -24,9 +45,17 @@
       <p class="alert alert-danger"><%= flash[:alert] %></p>
     <% end %>
 
-    <main>
-      <%= yield %> <!-- 各ビューのコンテンツをここに描画 -->
+    <% if ["story_maps", "story_parts", "characters", "panels","pages","relationship_groups"].include?(controller_name) && ["index","new", "show", "edit"].include?(action_name) %>
+    <%= render "shared/split_setup" %>
+    <% end %>
+
+    <main id="main-content">
+    <%= yield %>
     </main>
+
+
+    <!-- Split.js 読み込み（importmapで管理していない場合） -->
+    <script src="https://unpkg.com/split.js/dist/split.min.js"></script>
 
     <% if ["story_maps", "story_parts", "characters", "panels","pages","relationship_groups"].include?(controller_name) && ["index","new", "show", "edit"].include?(action_name) %>
       <%= render "shared/footer" %>

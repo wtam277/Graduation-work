@@ -1,2 +1,19 @@
-<h1>Works#edit</h1>
-<p>Find me in app/views/works/edit.html.erb</p>
+<h1>作品編集</h1>
+
+<%= form_with(model: @comic, local: true) do |f| %>
+  <div>
+    <%= f.label :title, "作品名" %>
+    <%= f.text_field :title %>
+  </div>
+  
+  <div>
+    <%= f.label :total_page, "ページ数" %>
+    <%= f.number_field :total_page %>
+  </div>
+
+  <div>
+    <%= f.submit "作品を更新" %>
+  </div>
+<% end %>
+
+<%= link_to "作品一覧に戻る", works_path %>

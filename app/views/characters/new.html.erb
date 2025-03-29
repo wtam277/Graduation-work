@@ -1,0 +1,21 @@
+<!-- 新規キャラクター作成フォーム -->
+<%= form_with(model: [@comic, @character], url: comic_characters_path(@comic), local: true, multipart: true) do |f| %>
+  <div>
+    <%= f.label :name, "キャラクター名" %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div>
+    <%= f.label :description, "キャラクター説明" %>
+    <%= f.text_area :description, rows: 4, cols: 50 %>
+  </div>
+
+  <div>
+    <%= f.label :icon, "アイコン画像" %>
+    <%= f.file_field :icon %>
+  </div>
+
+  <div>
+    <%= f.submit "作成" %>
+  </div>
+<% end %>

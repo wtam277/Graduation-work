@@ -3,12 +3,11 @@ document.addEventListener("turbo:load", function () {
     document.querySelectorAll(".note").forEach(note => {
       const comicId = note.dataset.comicId;
       const noteId = note.dataset.id;
+      const notableType = note.dataset.notableType;
       const content = note.querySelector("textarea")?.value || "";
   
-      // 中身をクリアして再構築
       note.innerHTML = "";
   
-      // ×ボタン
       const closeBtn = document.createElement("button");
       closeBtn.innerText = "×";
       closeBtn.className = "delete-button";
@@ -26,7 +25,6 @@ document.addEventListener("turbo:load", function () {
       closeBtn.onclick = () => deleteNote(note);
       note.appendChild(closeBtn);
   
-      // テキストエリア
       const textArea = document.createElement("textarea");
       textArea.value = content;
       textArea.addEventListener("input", () => updateNoteContent(textArea));
@@ -35,9 +33,10 @@ document.addEventListener("turbo:load", function () {
       makeNoteDraggable(note);
     });
   
-    // ＋ボタンにイベント
+    // ＋ボタンイベント
     document.querySelectorAll(".add-note").forEach(button => {
       button.addEventListener("click", function () {
+        console.log("＋ボタン押されました"); // ←ここ追加
         const comicId = this.dataset.comicId;
         const notableType = this.dataset.notableType;
         if (comicId && notableType) addDraggableNote(comicId, notableType);
@@ -45,8 +44,15 @@ document.addEventListener("turbo:load", function () {
     });
   });
   
+  function getStikyNoteBasePath(comicId, notableType) {
+    const pathType = notableType === "panel" ? "panels" : "story_parts";
+    return `/comics/${comicId}/${pathType}/stiky_notes`;
+  }
+  
   window.addDraggableNote = function (comicId, notableType) {
-    fetch(`/comics/${comicId}/stiky_notes`, {
+    const url = getStikyNoteBasePath(comicId, notableType);
+  
+    fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -57,7 +63,7 @@ document.addEventListener("turbo:load", function () {
           note_content: "新しいメモ",
           position_x: Math.random() * (window.innerWidth - 150),
           position_y: Math.random() * (window.innerHeight - 150),
-          notable_type: notableType // 🔥 ボタンから取得したタイプを渡す
+          notable_type: notableType
         }
       })
     })
@@ -66,7 +72,7 @@ document.addEventListener("turbo:load", function () {
         const noteContainer = document.getElementById("note-container");
         if (!noteContainer) return;
   
-        const note = createNoteElement(data, comicId);
+        const note = createNoteElement(data, comicId, notableType);
         noteContainer.appendChild(note);
         makeNoteDraggable(note);
       });
@@ -76,8 +82,10 @@ document.addEventListener("turbo:load", function () {
     const note = textarea.closest(".note");
     const comicId = note.dataset.comicId;
     const noteId = note.dataset.id;
+    const notableType = note.dataset.notableType;
+    const url = getStikyNoteBasePath(comicId, notableType) + `/${noteId}`;
   
-    fetch(`/comics/${comicId}/stiky_notes/${noteId}`, {
+    fetch(url, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -90,10 +98,12 @@ document.addEventListener("turbo:load", function () {
   window.deleteNote = function (note) {
     const comicId = note.dataset.comicId;
     const noteId = note.dataset.id;
+    const notableType = note.dataset.notableType;
+    const url = getStikyNoteBasePath(comicId, notableType) + `/${noteId}`;
   
     if (!confirm("このメモを削除しますか？")) return;
   
-    fetch(`/comics/${comicId}/stiky_notes/${noteId}`, {
+    fetch(url, {
       method: "DELETE",
       headers: {
         "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content
@@ -147,10 +157,12 @@ document.addEventListener("turbo:load", function () {
   function updateNotePosition(note) {
     const comicId = note.dataset.comicId;
     const noteId = note.dataset.id;
+    const notableType = note.dataset.notableType;
     const position_x = parseFloat(note.style.left);
     const position_y = parseFloat(note.style.top);
+    const url = getStikyNoteBasePath(comicId, notableType) + `/${noteId}`;
   
-    fetch(`/comics/${comicId}/stiky_notes/${noteId}`, {
+    fetch(url, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -160,13 +172,14 @@ document.addEventListener("turbo:load", function () {
     });
   }
   
-  function createNoteElement(data, comicId) {
+  function createNoteElement(data, comicId, notableType) {
     const note = document.createElement("div");
     note.className = "note";
     note.style.left = `${data.position_x}px`;
     note.style.top = `${data.position_y}px`;
     note.dataset.id = data.id;
     note.dataset.comicId = comicId;
+    note.dataset.notableType = notableType;
   
     const closeBtn = document.createElement("button");
     closeBtn.innerText = "×";

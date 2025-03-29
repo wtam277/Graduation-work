@@ -23,6 +23,26 @@ class WorksController < ApplicationController
     end
   end
 
+  def edit
+    @comic = Comic.find(params[:id])
+  end
+  
+  def update
+    @comic = Comic.find(params[:id])
+    if @comic.update(comic_params)
+      redirect_to works_path, notice: "更新しました"
+    else
+      render :index
+    end
+  end
+
+  def destroy
+      @comic = Comic.find(params[:id])
+      @comic.destroy
+      redirect_to comics_path, notice: "削除しました"
+  end
+
+
   private
 
   def comic_params

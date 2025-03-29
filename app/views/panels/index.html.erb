@@ -2,11 +2,11 @@
 
 <% comic = Comic.find(params[:comic_id]) %>
 
-<p>＜起＞: <%= comic.story_parts.where(part_type: 0).order(created_at: :desc).first&.content || "なし" %></p>
+<p>
+  ＜起＞: <%= comic.story_parts.where(part_type: 0).order(created_at: :desc).first&.content || "なし" %>
+  <button type="button" class="add-note" data-comic-id="<%= @comic.id %>" data-notable-type="panel" style="margin-left: 8px;">＋</button>
+</p>
 
-<div class="note-button">
-  <button type="button" class="add-note" data-comic-id="<%= @comic.id %>" data-notable-type="panel">＋</button>
-</div>
 
 <!-- 付箋のコンテナ -->
 <div id="note-container">
@@ -30,22 +30,28 @@
           <% if panel.present? %>
             <!--  Location -->
             <% if panel.locations.any? %>
-              <p><strong>ロケーション：</strong> <%= panel.locations.map(&:location_name).join(", ") %></p>
+            <div class="location-position">
+              <p><strong>場所：</strong> <%= panel.locations.map(&:location_name).join(", ") %></p>
             <% else %>
               <p>ロケーション情報なし</p>
             <% end %>
+            </div>
 
             <!-- セリフの表示 -->
             <% if panel.speeches.any? %>
             
             <% panel.speeches.order(:position).each do |speech| %>
-              <p>
-                <% if speech.character&.icon&.attached? %>
-                  <%= image_tag url_for(speech.character.icon), size: "30x30", alt: "キャラアイコン", style: "vertical-align: middle; margin-right: 8px;" %>
-                <% end %>
-                <strong><%= speech.character.name if speech.character %>:</strong>
-                <%= speech.content %>
-              </p>
+              <div class="speech-line">
+                <div class="character-block">
+                  <% if speech.character&.icon&.attached? %>
+                    <%= image_tag url_for(speech.character.icon), class: "speech-icon" %>
+                  <% end %>
+                  <div class="character-name"><%= speech.character.name if speech.character %></div>
+                </div>
+                <div class="speech-bubble">
+                  <%= speech.content %>
+                </div>
+              </div>
             <% end %>
           <% else %>
             <p>セリフはまだありません</p>
@@ -63,9 +69,167 @@
   </div>
 <% end %>
 
-<p>＜承＞: <%= comic.story_parts.where(part_type: 1).order(created_at: :desc).first&.content || "なし" %></p>
-<p>＜転＞: <%= comic.story_parts.where(part_type: 2).order(created_at: :desc).first&.content || "なし" %></p>
-<p>＜結＞: <%= comic.story_parts.where(part_type: 3).order(created_at: :desc).first&.content || "なし" %></p>
+<p>
+＜承＞: <%= comic.story_parts.where(part_type: 1).order(created_at: :desc).first&.content || "なし" %>
+<button type="button" class="add-note" data-comic-id="<%= @comic.id %>" data-notable-type="panel" style="margin-left: 8px;">＋</button>
+</p>
+
+<% (5..8).each_slice(1) do |group| %>
+  <div class="storage-container">
+    <% group.each do |position| %>
+      <% panel = @comic.panels.find_by(position: position) %>
+      <div class="storage-box">
+        <div class="position-number"><%= position %></div>
+        <div class="panel-content">
+          <% if panel.present? %>
+            <!--  Location -->
+            <% if panel.locations.any? %>
+            <div class="location-position">
+              <p><strong>場所：</strong> <%= panel.locations.map(&:location_name).join(", ") %></p>
+            <% else %>
+              <p>ロケーション情報なし</p>
+            <% end %>
+            </div>
+
+            <!-- セリフの表示 -->
+            <% if panel.speeches.any? %>
+            
+            <% panel.speeches.order(:position).each do |speech| %>
+              <div class="speech-line">
+                <div class="character-block">
+                  <% if speech.character&.icon&.attached? %>
+                    <%= image_tag url_for(speech.character.icon), class: "speech-icon" %>
+                  <% end %>
+                  <div class="character-name"><%= speech.character.name if speech.character %></div>
+                </div>
+                <div class="speech-bubble">
+                  <%= speech.content %>
+                </div>
+              </div>
+            <% end %>
+          <% else %>
+            <p>セリフはまだありません</p>
+          <% end %>
+
+            <%= link_to "編集", edit_comic_panel_path(@comic, panel), class: "edit-button" %>
+          <% else %>
+            <!-- パネル未作成 -->
+            <p>まだ作成していません</p>
+            <%= link_to "新規作成", new_comic_panel_path(@comic, position: position), class: "create-button" %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<p>
+＜転＞: <%= comic.story_parts.where(part_type: 2).order(created_at: :desc).first&.content || "なし" %>
+<button type="button" class="add-note" data-comic-id="<%= @comic.id %>" data-notable-type="panel" style="margin-left: 8px;">＋</button>
+</p>
+
+<% (9..12).each_slice(1) do |group| %>
+  <div class="storage-container">
+    <% group.each do |position| %>
+      <% panel = @comic.panels.find_by(position: position) %>
+      <div class="storage-box">
+        <div class="position-number"><%= position %></div>
+        <div class="panel-content">
+          <% if panel.present? %>
+            <!--  Location -->
+            <% if panel.locations.any? %>
+            <div class="location-position">
+              <p><strong>場所：</strong> <%= panel.locations.map(&:location_name).join(", ") %></p>
+            <% else %>
+              <p>ロケーション情報なし</p>
+            <% end %>
+            </div>
+
+            <!-- セリフの表示 -->
+            <% if panel.speeches.any? %>
+            
+            <% panel.speeches.order(:position).each do |speech| %>
+              <div class="speech-line">
+                <div class="character-block">
+                  <% if speech.character&.icon&.attached? %>
+                    <%= image_tag url_for(speech.character.icon), class: "speech-icon" %>
+                  <% end %>
+                  <div class="character-name"><%= speech.character.name if speech.character %></div>
+                </div>
+                <div class="speech-bubble">
+                  <%= speech.content %>
+                </div>
+              </div>
+            <% end %>
+          <% else %>
+            <p>セリフはまだありません</p>
+          <% end %>
+
+            <%= link_to "編集", edit_comic_panel_path(@comic, panel), class: "edit-button" %>
+          <% else %>
+            <!-- パネル未作成 -->
+            <p>まだ作成していません</p>
+            <%= link_to "新規作成", new_comic_panel_path(@comic, position: position), class: "create-button" %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<p>
+＜結＞: <%= comic.story_parts.where(part_type: 3).order(created_at: :desc).first&.content || "なし" %>
+<button type="button" class="add-note" data-comic-id="<%= @comic.id %>" data-notable-type="panel" style="margin-left: 8px;">＋</button>
+</p>
+
+<% (13..16).each_slice(1) do |group| %>
+  <div class="storage-container">
+    <% group.each do |position| %>
+      <% panel = @comic.panels.find_by(position: position) %>
+      <div class="storage-box">
+        <div class="position-number"><%= position %></div>
+        <div class="panel-content">
+          <% if panel.present? %>
+            <!--  Location -->
+            <% if panel.locations.any? %>
+            <div class="location-position">
+              <p><strong>場所：</strong> <%= panel.locations.map(&:location_name).join(", ") %></p>
+            <% else %>
+              <p>ロケーション情報なし</p>
+            <% end %>
+            </div>
+
+            <!-- セリフの表示 -->
+            <% if panel.speeches.any? %>
+            
+            <% panel.speeches.order(:position).each do |speech| %>
+              <div class="speech-line">
+                <div class="character-block">
+                  <% if speech.character&.icon&.attached? %>
+                    <%= image_tag url_for(speech.character.icon), class: "speech-icon" %>
+                  <% end %>
+                  <div class="character-name"><%= speech.character.name if speech.character %></div>
+                </div>
+                <div class="speech-bubble">
+                  <%= speech.content %>
+                </div>
+              </div>
+            <% end %>
+          <% else %>
+            <p>セリフはまだありません</p>
+          <% end %>
+
+            <%= link_to "編集", edit_comic_panel_path(@comic, panel), class: "edit-button" %>
+          <% else %>
+            <!-- パネル未作成 -->
+            <p>まだ作成していません</p>
+            <%= link_to "新規作成", new_comic_panel_path(@comic, position: position), class: "create-button" %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
 
 
 <style>
@@ -81,7 +245,7 @@
   padding: 20px;
   border-radius: 10px;
   width: 300px;
-  height: 170px;
+  height: 200px;
 
   /* 👇追加：ボックス間に余白を作る */
   margin-bottom: 10px;
@@ -163,4 +327,146 @@
   cursor: pointer;
   color: black;
 }
+   /* characterの画像設定 */
+   .rounded-full {
+    border-radius: 50%; /* 画像を丸く表示 */
+    object-fit: cover; /* 縦横比を維持してカバー */
+    width: 30px;
+    height: 30px;
+  }
+
+  .panel-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.panel {
+  width: 250px;
+  height: 120px;
+  background-color: green;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 15px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.panel-position {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.panel-content {
+  font-size: 14px;
+  text-align: center;
+  margin: 5px 0;
+}
+
+.panel-location {
+  margin-top: 10px;
+}
+
+
+
+.submit-button {
+  margin-top: 20px;
+  background-color: darkgreen;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.submit-button:hover {
+  background-color: forestgreen;
+}
+
+.add-button {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.add-button:hover {
+  background-color: #45a049;
+}
+
+
+.location-position {
+  font-size: 13px;
+  margin-top: 4px;
+  font-weight: bold;
+}
+  
+
+.character-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.character-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.speech-line {
+  display: flex;
+  align-items: flex-start;
+  margin: 10px 0;
+}
+
+.character-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 12px;
+}
+
+.speech-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.character-name {
+  font-size: 10px;
+  margin-top: 4px;
+  font-weight: bold;
+}
+
+.speech-bubble {
+  position: relative;
+  background: #f1f1f1;
+  border-radius: 12px;
+  padding: 10px 14px;
+  width: 200px;
+  font-size: 14px;
+}
+
+.speech-bubble::before {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: -6px;
+  border-top: 10px solid transparent;
+  border-right: 16px solid #f1f1f1;
+  border-bottom: 12px solid transparent;
+}
+
 </style>

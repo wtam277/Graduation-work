@@ -6,6 +6,7 @@ class StoryPartsController < ApplicationController
     @story_parts = @comic.story_parts || []  # nilの可能性をなくす
     @story_part = @comic.story_parts.build
     @stiky_notes = @comic.stiky_notes.where(notable_type: "story_part")|| []
+
   end
 
   def create

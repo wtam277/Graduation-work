@@ -1,4 +1,4 @@
-<header>
+<header id="page-header">
 <nav>
   <% if @comic.present? %>
     <a>作品名：<%= @comic.title %></a>
@@ -7,4 +7,16 @@
   <% end %>
 </nav>
 <%= link_to "作品一覧に戻る", works_path %>
+
 </header>
+
+<style>
+#page-header {
+  background-color: #82D8FF;
+  padding: 10px;
+  text-align: left;
+  width: 100%;
+  z-index: 100;
+}
+
+</style>

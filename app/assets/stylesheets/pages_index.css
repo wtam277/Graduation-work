@@ -1,0 +1,29 @@
+.page-form {
+    display: flex;
+    align-items: center; /* 垂直方向の中央揃え */
+    margin-bottom: 10px;
+  }
+  
+  .form-group {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* 要素間の余白 */
+  }
+  
+  .page-number {
+    font-weight: bold;
+    width: 20px; /* ページ番号の固定幅 */
+    text-align: right;
+    display: inline-block; /* 余計な改行や隙間を防ぐ */
+    margin: 0;
+    padding: 0;
+  }
+  
+  .content-textarea {
+    width: 700px;
+    height: 30px;
+  }
+  
+  .save-button {
+    padding: 5px 10px;
+  }

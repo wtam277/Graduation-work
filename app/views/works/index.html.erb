@@ -1,10 +1,115 @@
 <h1>作品一覧</h1>
-<%= link_to "新しい作品を追加", new_work_path %>
 
-<ul>
-  <% @comics.each do |comic| %>
-    <li>
-      <%= link_to comic.title, comic_story_maps_path(comic) %> (ページ数: <%= comic.total_page %>)
-    </li>
-  <% end %>
-</ul>
+<div class="board-header">
+  <div class="filters">
+    <select><option>すべてのボード</option></select>
+    <select><option>全ユーザーのボード</option></select>
+    <select><option>最終閲覧日</option></select>
+  </div>
+  <div class="actions">
+    <%= link_to "新規作成", new_work_path, class: "new-btn" %>
+  </div>
+</div>
+
+<table class="board-table">
+  <thead>
+    <tr>
+      <th>名前</th>
+      <th>ページ数</th>
+      <th>最終閲覧</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @comics.each do |comic| %>
+      <tr>
+        <td class="comic-name">
+          <div class="info">
+            <strong><%= link_to comic.title, comic_story_maps_path(comic) %></strong>
+          </div>
+        </td>
+        <td><%= comic.total_page %>ページ</td>
+        <td><%= comic.updated_at.strftime("%Y年%-m月%-d日") %></td>
+        <td class="row-actions">
+          <%= link_to "編集", edit_comic_path(comic), class: "action-btn" %>
+          <%= form_with url: comic_path(comic), method: :delete, class: "inline-form", local: true do %>
+            <%= submit_tag "削除", data: { confirm: "本当に削除しますか？" }, class: "action-btn danger" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<style>
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filters select {
+  margin-right: 10px;
+  padding: 5px 10px;
+}
+
+.actions .new-btn {
+  background-color: #2f6fed;
+  color: white;
+  padding: 6px 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.board-table {
+  width: 100%;
+  border-collapse: collapse; /* ← 罫線ズレ防止 */
+  border-spacing: 0;
+  font-family: sans-serif;
+}
+
+.board-table th,
+.board-table td {
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 1px solid #ccc;
+  vertical-align: top;
+}
+
+.comic-name .info small {
+  display: block;
+  color: #888;
+  font-size: 8px;
+  margin-top: 4px;
+}
+
+.row-actions {
+  display: flex;
+  align-items: center;
+  gap: -500px; /* ← 横間隔を極限まで縮める */
+}
+
+.inline-form {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  color: #2f6fed;
+  font-size: 14px;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.action-btn.danger {
+  color: #d9534f;
+}
+</style>
