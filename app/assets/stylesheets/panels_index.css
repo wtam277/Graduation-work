@@ -1,0 +1,237 @@
+.storage-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .storage-box {
+    position: relative;
+    background-color: #6bb7ff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    height: 200px;
+  
+    /* 👇追加：ボックス間に余白を作る */
+    margin-bottom: 10px;
+  }
+  
+  .position-number {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #a8e6cf; /* 緑 */
+    padding: 5px 10px;
+    font-weight: bold;
+    border-radius: 5px;
+  }
+  
+  .panel-content {
+    text-align: center;
+    margin-top: 30px;
+  }
+  
+  .create-button {
+    display: block;
+    margin: 10px auto;
+    background-color: gray;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+  }
+  
+  .note-button {
+    width: 50px;
+    text-align: center;
+  }
+  
+  .add-note {
+    background-color: #ffcc00;
+    border: none;
+    font-size: 20px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .note {
+    width: 150px;
+    height: 100px;
+    background-color: yellow;
+    position: absolute;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border: 1px solid #ccc;
+    padding: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .note textarea {
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding-top: 20px;
+    background: transparent;
+    font-size: 14px;
+    resize: none;
+    outline: none;
+    text-align: left;
+  }
+  
+  .delete-note-btn {
+    position: absolute;
+    top: 2px;
+    right: 5px;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    cursor: pointer;
+    color: black;
+  }
+     /* characterの画像設定 */
+     .rounded-full {
+      border-radius: 50%; /* 画像を丸く表示 */
+      object-fit: cover; /* 縦横比を維持してカバー */
+      width: 30px;
+      height: 30px;
+    }
+  
+    .panel-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .panel {
+    width: 250px;
+    height: 120px;
+    background-color: green;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 15px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .panel-position {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .panel-content {
+    font-size: 14px;
+    text-align: center;
+    margin: 5px 0;
+  }
+  
+  .panel-location {
+    margin-top: 10px;
+  }
+  
+  
+  
+  .submit-button {
+    margin-top: 20px;
+    background-color: darkgreen;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+  }
+  
+  .submit-button:hover {
+    background-color: forestgreen;
+  }
+  
+  .add-button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .add-button:hover {
+    background-color: #45a049;
+  }
+  
+  
+  .location-position {
+    font-size: 13px;
+    margin-top: 4px;
+    font-weight: bold;
+  }
+    
+  
+  .character-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .character-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .speech-line {
+    display: flex;
+    align-items: flex-start;
+    margin: 10px 0;
+  }
+  
+  .character-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 12px;
+  }
+  
+  .speech-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .character-name {
+    font-size: 10px;
+    margin-top: 4px;
+    font-weight: bold;
+  }
+  
+  .speech-bubble {
+    position: relative;
+    background: #f1f1f1;
+    border-radius: 12px;
+    padding: 10px 14px;
+    width: 200px;
+    font-size: 14px;
+  }
+  
+  /* フキダシの三角 */
+  .speech-bubble::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: -6px;
+    border-top: 10px solid transparent;
+    border-right: 16px solid #f1f1f1;
+    border-bottom: 12px solid transparent;
+  }
+  

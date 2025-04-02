@@ -3,6 +3,7 @@ class WorksController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create]  
   def index
     @comics = current_user.comics
+
   end
 
   def show

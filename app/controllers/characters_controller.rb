@@ -3,8 +3,9 @@ class CharactersController < ApplicationController
     before_action :set_character, only: [:edit, :update]
   
     def index
-      @character = @comic.characters.build  # 新規作成用インスタンス
-      @characters = @comic.characters  # 関連するキャラクターを取得
+      @character = @comic.characters.build  # 新規作成フォーム用
+      @characters = @comic.characters.order(:id).reject(&:new_record?)
+      @relationship_groups = @comic.relationship_groups.includes(:relationships)
     end
 
     def new
@@ -32,6 +33,12 @@ class CharactersController < ApplicationController
       else
         render :edit
       end
+    end
+
+    def destroy
+      @character = @comic.characters.find(params[:id])
+      @character.destroy
+      redirect_to comic_characters_path(@comic), notice: "相関図が削除されました！"
     end
   
     private

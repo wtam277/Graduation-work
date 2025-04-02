@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get "relationship_groups/index"
   resources :works
+  resource :user, only: [:edit, :update]
   devise_for :users
   root "home#index"
   get "/works", to: "works#index"
@@ -10,7 +11,7 @@ Rails.application.routes.draw do
   resources :comics, controller: "works" do
     resources :story_maps, only: [:index, :create, :update] 
     resources :story_parts, only: [:index, :create, :update, :destroy] 
-    resources :characters, only: [:index, :new, :create, :update, :edit]
+    resources :characters, only: [:index, :new, :create, :update, :edit, :destroy]
     resources :panels, only: [:index, :new, :create, :update, :edit] 
     resources :relationship_groups, only: [:index, :new, :create, :update, :edit, :destroy]
     resources :pages, only: [:index, :create, :update]

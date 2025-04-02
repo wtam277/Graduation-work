@@ -20,7 +20,7 @@ class RelationshipGroupsController < ApplicationController
     puts "Received params: #{params.inspect}" # 追加
     
     if @relationship_group.save
-      redirect_to comic_relationship_groups_path(@comic), notice: "相関図を作成しました！"
+      redirect_to comic_characters_path(@comic), notice: "相関図を作成しました！"
     else
       @relationship_groups = @comic.relationship_groups.includes(:relationships) # 追加
       render :index
@@ -35,7 +35,7 @@ class RelationshipGroupsController < ApplicationController
   def update
     @relationship_group = @comic.relationship_groups.find(params[:id])
     if @relationship_group.update(relationship_group_params)
-      redirect_to comic_relationship_groups_path(@comic), notice: "相関図を更新しました！"
+      redirect_to comic_characters_path(@comic), notice: "相関図を更新しました！"
     else
       @characters = @comic.characters
       render :edit
@@ -45,7 +45,7 @@ class RelationshipGroupsController < ApplicationController
     def destroy
       @relationship_group = @comic.relationship_groups.find(params[:id])
       @relationship_group.destroy
-      redirect_to comic_relationship_groups_path(@comic), notice: "相関図が削除されました！"
+      redirect_to comic_characters_path(@comic), notice: "相関図が削除されました！"
     end
 
   private
@@ -57,7 +57,7 @@ class RelationshipGroupsController < ApplicationController
   def relationship_group_params
     params.require(:relationship_group).permit(
       :group_name,
-      relationships_attributes: [:character_a_id, :character_b_id, :relationship_type, :directionality]
+      relationships_attributes: [:id, :character_a_id, :character_b_id, :relationship_type, :directionality, :destroy]
     )
   end
 end

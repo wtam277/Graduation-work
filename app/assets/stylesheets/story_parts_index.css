@@ -1,0 +1,67 @@
+.story-part-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .story-part-label {
+    width: 50px;
+    font-weight: bold;
+  }
+
+  .story-part-input {
+    flex-grow: 1;
+  }
+
+  .note-button {
+    width: 50px;
+    text-align: center;
+  }
+
+  .add-note {
+    background-color: #ffcc00;
+    border: none;
+    font-size: 20px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+
+  .note {
+    width: 150px;
+    height: 100px;
+    background-color: yellow;
+    position: absolute;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border: 1px solid #ccc;
+    padding: 5px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  .note textarea {
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding-top: 20px;
+    background: transparent;
+    font-size: 14px;
+    resize: none;
+    outline: none;
+    text-align: left;
+  }
+
+  .delete-note-btn {
+    position: absolute;
+    top: 2px;
+    right: 5px;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    cursor: pointer;
+    color: black;
+  }

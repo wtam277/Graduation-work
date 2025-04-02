@@ -16,6 +16,20 @@
       <%= stylesheet_link_tag "works_index", media: "all", "data-turbo-track": "reload" %>
     <% end %>
 
+    <!-- storyParts#index用のCSSだけ読み込む -->
+    <% if controller.controller_name == "story_parts" && controller.action_name == "index" %>
+      <%= stylesheet_link_tag "story_parts_index", media: "all", "data-turbo-track": "reload" %>
+    <% end %>
+    <!-- characters#index用のCSSだけ読み込む(相関図も読み取るよう追記) -->
+    <% if controller.controller_name == "characters" && controller.action_name == "index" %>
+      <%= stylesheet_link_tag "characters_index", "relationship_groups_index", media: "all", "data-turbo-track": "reload" %>
+    <% end %>
+
+    <!-- relationship_groups#index用のCSSだけ読み込む -->
+    <% if controller.controller_name == "relationship_groups" && controller.action_name == "index" %>
+      <%= stylesheet_link_tag "relationship_groups_index", media: "all", "data-turbo-track": "reload" %>
+    <% end %>
+
     <!-- panels#index用のCSSだけ読み込む -->
     <% if controller.controller_name == "panels" && controller.action_name == "index" %>
       <%= stylesheet_link_tag "panels_index", media: "all", "data-turbo-track": "reload" %>

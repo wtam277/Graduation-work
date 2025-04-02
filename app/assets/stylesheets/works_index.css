@@ -1,25 +1,117 @@
-body {
-    font-family: Arial, sans-serif;
-  }
 
-  form {
-    width: 500px; /* フォームの幅を固定 */
+
+  .works-index form {
+    width: 100px; /* フォームの幅を固定 */
     margin: 0; /* 余白をリセット */
     display: block; /* ブロック要素にする */
     text-align: left; /* フォーム内の要素を左揃え */
-  }
-  
-  textarea {
-    width: 100%; /* テキストエリアの幅をフォームに合わせる */
-    resize: none; /* ユーザーがサイズ変更できないようにする */
-  }
-  
-  input[type="submit"] {
-    display: block;
-    width: 100%;
-  }
+  } 
 
-  label {
-    display: block;
-    margin-bottom: 5px; /* ラベルとテキストエリアの間に余白を追加 */
+
+  .header-with-logout {
+    display: flex;
+    justify-content: space-between; /* 左右に分ける */
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .user-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .user-position {
+    display: flex;
+    flex-direction: column; /* 縦に並べる（ユーザー名の下にログアウト） */
+    align-items: flex-end; /* ← 右寄せ */
+    gap: 5px;
+    width: 200px;
+  }
+  
+  .logout-btn {
+    width: auto;         /* 内容に合わせた幅 */
+    padding: 4px 12px;   /* ボタン内の余白を調整 */
+    font-size: 14px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .logout-link {
+    font-size: 14px;
+    text-decoration: underline;
+    color: #2f6fed;
+    cursor: pointer;
+  }
+  
+  .board-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .filters select {
+    margin-right: 10px;
+    padding: 5px 10px;
+  }
+  
+  .actions .new-btn {
+    background-color: #2f6fed;
+    color: white;
+    padding: 6px 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .board-table {
+    width: 100%;
+    border-collapse: collapse; /* ← 罫線ズレ防止 */
+    border-spacing: 0;
+    font-family: sans-serif;
+  }
+  
+  .board-table th,
+  .board-table td {
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid #ccc;
+    vertical-align: top;
+  }
+  
+  
+  .row-actions {
+    display: flex;
+    align-items: center;
+    gap: 100px; /* ← 横間隔を極限まで縮める */
+  }
+  
+  .inline-form {
+    display: inline;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* 編集と削除のボタン */
+  .action-btn {
+    background: none;
+    border: none;
+    color: #2f6fed;
+    font-size: 14px;
+    padding: 0;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  .comic-name {
+    font-size: 14px;
+  }
+  
+  .action-btn.danger {
+    color: #d9534f;
   }

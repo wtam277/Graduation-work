@@ -1,0 +1,96 @@
+/* キャラクター一覧全体 */
+.character-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start; /* カードを左揃えに配置 */
+  }
+  
+  /* 各キャラクターカード */
+  .character-card {
+    background-color: #e0e0e0;
+    border-radius: 20px;
+    padding: 20px;
+    width: 220px;
+    text-align: center;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* アイコン画像 */
+  .character-icon {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: #f0d54e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+    object-fit: cover;
+  }
+  
+  /* アイコンが未設定の場合のスタイル */
+  .character-icon.placeholder {
+    color: #333;
+  }
+  
+  /* キャラクター名 */
+  .character-name {
+    font-weight: bold;
+    margin: 10px 0 5px;
+    font-size: 18px;
+  }
+  
+  /* 説明文 */
+  .character-description {
+    background-color: #dcdcdc;
+    padding: 10px;
+    border-radius: 15px;
+    width: 100%;
+    margin-bottom: 15px;
+    font-size: 14px;
+  }
+  
+  .character-actions form {
+    display: inline !important;
+  }
+  
+  .character-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px; /* 編集・削除の間隔 */
+    margin-top: 10px;
+  }
+  
+  .character-actions.vertical {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .character-actions form {
+    display: flex !important;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* ボタン共通スタイル */
+  .action-button {
+    background: none;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    color: #333;
+    text-decoration: underline;
+    padding: 0;
+  }
+  
+  .action-button.danger {
+    color: #d9534f;
+  }

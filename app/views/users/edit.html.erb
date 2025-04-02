@@ -1,0 +1,38 @@
+<h1>ユーザー情報編集</h1>
+
+<%= form_with(model: current_user, url: user_path, local: true, method: :patch, html: { multipart: true }) do |f| %>
+  
+  <!-- 現在のユーザーネーム表示 -->
+  <div class="field">
+    <label>現在のユーザーネーム:</label>
+    <p><%= current_user.username %></p>
+  </div>
+
+  <!-- ユーザーネーム編集 -->
+  <div class="field">
+    <%= f.label :username, "新しいユーザーネーム" %><br>
+    <%= f.text_field :username %>
+  </div>
+
+  <!-- 現在の画像の表示 -->
+  <div class="field">
+    <label>現在のユーザー画像:</label><br>
+    <% if current_user.avatar.attached? %>
+      <%= image_tag current_user.avatar.variant(resize_to_limit: [150, 150]), id: "avatar-preview" %>
+    <% else %>
+      <p>ユーザー画像がありません</p>
+      <%= image_tag "", id: "avatar-preview", style: "display: none;" %>
+    <% end %>
+  </div>
+
+  <!-- ユーザー画像アップロード -->
+  <div class="field">
+    <%= f.label :avatar, "ユーザー画像を選択" %><br>
+    <%= f.file_field :avatar, accept: "image/*", onchange: "previewAvatar(event)" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "更新する" %>
+  </div>
+
+<% end %>

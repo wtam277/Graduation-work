@@ -8,6 +8,7 @@ ja:
         signed_out: "ログアウトしました。"
       signed_in: "ログインしました。"
       signed_out: "ログアウトしました。"
+      already_authenticated: "すでにログインしています"
     shared:
       links:
         sign_up: "新規登録"

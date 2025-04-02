@@ -1,131 +1,35 @@
 <h1>キャラクター一覧</h1>
 <%= link_to "新規作成", new_comic_character_path(@comic), class: "new-character-btn" %>
-<!-- キャラクターカード一覧 -->
-<div class="character-cards"> 
 
-  <% @characters.each do |character| %>
-    <div class="character-card">
-      <% if character.icon.attached? %>
-        <%= image_tag character.icon.variant(resize_to_fill: [120, 120]), class: "character-icon" %>
-      <% else %>
-        <div class="character-icon placeholder">アイコン</div>
-      <% end %>
+<% if @characters.any? %>
+  <!-- キャラクターカード一覧 -->
+  <div class="character-cards"> 
+    <% @characters.each do |character| %>
+      <div class="character-card">
+        <% if character.icon.attached? %>
+          <%= image_tag character.icon.variant(resize_to_fill: [120, 120]), class: "character-icon" %>
+        <% else %>
+          <div class="character-icon placeholder">アイコン</div>
+        <% end %>
 
-      <div class="character-name"><%= character.name %></div>
-      <div class="character-description"><%= character.description.presence || "説明なし" %></div>
+        <div class="character-name"><%= character.name %></div>
+        <div class="character-description"><%= character.description.presence || "説明なし" %></div>
 
-      <% if character.id.present? %>
-        <div class="character-actions vertical">
-          <%= link_to "編集", edit_comic_character_path(@comic, character), class: "action-button" %>
-          <%= button_to "削除", comic_character_path(@comic, character), method: :delete,
-                form: { class: "inline-form", data: { turbo: false } }, class: "action-button danger" %>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
-
-</div> <!-- ★ここで閉じる -->
+        <% if character.id.present? %>
+          <div class="character-actions vertical">
+            <%= link_to "編集", edit_comic_character_path(@comic, character), class: "action-button" %>
+            <%= button_to "削除", comic_character_path(@comic, character), method: :delete,
+                  form: { class: "inline-form", data: { turbo: false } }, class: "action-button danger" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div> <!-- ★ここで閉じる -->
+<% else %>
+  <p>キャラクターが存在しません</p>
+<% end %>
 
 <hr>
 
-<h2>キャラクター相関図</h2>
-<%= link_to "相関図作成", comic_relationship_groups_path(@comic) %>
 
-<style>
-/* キャラクター一覧全体 */
-.character-cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: flex-start; /* カードを左揃えに配置 */
-}
-
-/* 各キャラクターカード */
-.character-card {
-  background-color: #e0e0e0;
-  border-radius: 20px;
-  padding: 20px;
-  width: 220px;
-  text-align: center;
-  box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* アイコン画像 */
-.character-icon {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background-color: #f0d54e;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  margin-bottom: 10px;
-  object-fit: cover;
-}
-
-/* アイコンが未設定の場合のスタイル */
-.character-icon.placeholder {
-  color: #333;
-}
-
-/* キャラクター名 */
-.character-name {
-  font-weight: bold;
-  margin: 10px 0 5px;
-  font-size: 18px;
-}
-
-/* 説明文 */
-.character-description {
-  background-color: #dcdcdc;
-  padding: 10px;
-  border-radius: 15px;
-  width: 100%;
-  margin-bottom: 15px;
-  font-size: 14px;
-}
-
-.character-actions form {
-  display: inline !important;
-}
-
-.character-actions {
-  display: flex;
-  justify-content: center;
-  gap: 12px; /* 編集・削除の間隔 */
-  margin-top: 10px;
-}
-
-.character-actions.vertical {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 8px;
-}
-
-.character-actions form {
-  display: flex !important;
-  justify-content: center;
-  margin: 0;
-  padding: 0;
-}
-
-/* ボタン共通スタイル */
-.action-button {
-  background: none;
-  border: none;
-  font-size: 14px;
-  cursor: pointer;
-  color: #333;
-  text-decoration: underline;
-  padding: 0;
-}
-
-.action-button.danger {
-  color: #d9534f;
-}
-</style>
+<%= render template: "relationship_groups/index" %>

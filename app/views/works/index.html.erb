@@ -1,11 +1,21 @@
-<h1>作品一覧</h1>
+<div class="header-with-logout">
+  <h1>作品一覧</h1>
 
-<div class="board-header">
-  <div class="filters">
-    <select><option>すべてのボード</option></select>
-    <select><option>全ユーザーのボード</option></select>
-    <select><option>最終閲覧日</option></select>
+  <div class="user-position">
+    <% if current_user.avatar.attached? %>
+      <%= image_tag current_user.avatar.variant(resize_to_fill: [60, 60]), class: "user-avatar" %>
+    <% end %>
+
+    <p>ようこそ、<%= current_user.username %> さん</p>
+
+    <%= form_with url: destroy_user_session_path, method: :delete, local: true do %>
+      <%= submit_tag "ログアウト", data: { confirm: "ログアウトしますか？" }, class: "logout-btn" %>
+    <% end %>
+
+    <%= link_to "ユーザー編集", edit_user_path, class: "action-btn" %>
   </div>
+</div>
+ <div class="board-header">
   <div class="actions">
     <%= link_to "新規作成", new_work_path, class: "new-btn" %>
   </div>
@@ -16,8 +26,8 @@
     <tr>
       <th>名前</th>
       <th>ページ数</th>
-      <th>最終閲覧</th>
-      <th>操作</th>
+      <th>最終更新日</th>
+      <th>その他</th>
     </tr>
   </thead>
   <tbody>
@@ -40,76 +50,4 @@
     <% end %>
   </tbody>
 </table>
-
-
-<style>
-.board-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.filters select {
-  margin-right: 10px;
-  padding: 5px 10px;
-}
-
-.actions .new-btn {
-  background-color: #2f6fed;
-  color: white;
-  padding: 6px 14px;
-  font-weight: bold;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.board-table {
-  width: 100%;
-  border-collapse: collapse; /* ← 罫線ズレ防止 */
-  border-spacing: 0;
-  font-family: sans-serif;
-}
-
-.board-table th,
-.board-table td {
-  text-align: left;
-  padding: 12px 16px;
-  border-bottom: 1px solid #ccc;
-  vertical-align: top;
-}
-
-.comic-name .info small {
-  display: block;
-  color: #888;
-  font-size: 8px;
-  margin-top: 4px;
-}
-
-.row-actions {
-  display: flex;
-  align-items: center;
-  gap: -500px; /* ← 横間隔を極限まで縮める */
-}
-
-.inline-form {
-  display: inline;
-  margin: 0;
-  padding: 0;
-}
-
-.action-btn {
-  background: none;
-  border: none;
-  color: #2f6fed;
-  font-size: 14px;
-  padding: 0;
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.action-btn.danger {
-  color: #d9534f;
-}
-</style>
+</body>
