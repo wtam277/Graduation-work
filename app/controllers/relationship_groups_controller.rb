@@ -14,16 +14,17 @@ class RelationshipGroupsController < ApplicationController
     @relationship_group.relationships.build if @relationship_group.relationships.empty?
     @relationship_groups = @comic.relationship_groups.includes(:relationships)
   end
+  
   def create
     @characters = @comic.characters # 追加: ビューで使えるようにセット
     @relationship_group = @comic.relationship_groups.build(relationship_group_params)
-    puts "Received params: #{params.inspect}" # 追加
+    logger.debug "💡 relationship_group_params: #{relationship_group_params.inspect}"
     
     if @relationship_group.save
       redirect_to comic_characters_path(@comic), notice: "相関図を作成しました！"
     else
-      @relationship_groups = @comic.relationship_groups.includes(:relationships) # 追加
-      render :index
+      @characters = @comic.characters
+      render :new
     end
   end
 
@@ -57,7 +58,15 @@ class RelationshipGroupsController < ApplicationController
   def relationship_group_params
     params.require(:relationship_group).permit(
       :group_name,
-      relationships_attributes: [:id, :character_a_id, :character_b_id, :relationship_type, :directionality, :destroy]
+      relationships_attributes: [
+        :id,
+        :character_a_id,
+        :character_b_id,
+        :relationship_type,
+        :directionality,
+        :_destroy
+      ]
     )
   end
+  
 end

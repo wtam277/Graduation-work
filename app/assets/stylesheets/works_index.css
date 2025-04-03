@@ -3,10 +3,8 @@
   .works-index form {
     width: 100px; /* フォームの幅を固定 */
     margin: 0; /* 余白をリセット */
-    display: block; /* ブロック要素にする */
-    text-align: left; /* フォーム内の要素を左揃え */
+    text-align: right; /* フォーム内の要素を左揃え */
   } 
-
 
   .header-with-logout {
     display: flex;
@@ -27,7 +25,7 @@
     flex-direction: column; /* 縦に並べる（ユーザー名の下にログアウト） */
     align-items: flex-end; /* ← 右寄せ */
     gap: 5px;
-    width: 200px;
+    width: auto; /* ← これが効く！ */
   }
   
   .logout-btn {

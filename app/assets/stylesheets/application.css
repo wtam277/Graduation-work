@@ -18,12 +18,13 @@
     padding-bottom: 100px; /* ← フッターの高さ＋α */
   }
 
- form {
+  form {
     width: 400px; /* フォームの幅を固定 */
     margin: 0; /* 余白をリセット */
     display: block; /* ブロック要素にする */
     text-align: left; /* フォーム内の要素を左揃え */
   }
+  
 
   textarea {
     width: 100%; /* テキストエリアの幅をフォームに合わせる */
