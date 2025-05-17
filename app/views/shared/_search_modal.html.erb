@@ -1,0 +1,176 @@
+<div id="search-modal" class="hidden">
+  <div class="modal-content styled-modal">
+    <button type="button" class="close-button" onclick="toggleSearchForm()">× 閉じる</button>
+
+    <h2>検索</h2>
+    <%= form_with url: search_comics_path, method: :get, scope: nil, local: false, data: { turbo_frame: "search_results" } do |f| %>
+      <%= hidden_field_tag :comic_id, @comic.id if @comic.present? %>
+      <div class="form-row">
+        <div class="form-group">
+          <%= f.label :q, "検索内容" %>
+          <%= f.text_field :q, class: "text-input" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :location, "場所" %>
+          <%= f.select :location, options_for_select([
+            ["すべて", "all"], 
+            ["物語の概要", "story_map"], 
+            ["キャラクター", "character"]
+            ]), {}, class: "select-input" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.submit "検索", class: "search-button" %>
+        </div>
+      </div>
+    <% end %>
+    <!-- ▼ 検索結果を表示、search/_results記述のrenderがこれで表示されるようになる-->
+    <turbo-frame id="search_results"></turbo-frame>
+  </div>
+  
+</div>
+
+
+
+<style>
+#search-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4); /* 背景暗く */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  position: relative; /* ← これがポイント */
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  min-width: 300px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+/* 閉じるボタン */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #eee;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+/* 検索フォームの全体の体裁（親要素） */
+.form-row {
+  display: flex;
+  align-items: flex-end; /* 下揃え */
+  gap: 15px;              /* 要素間のスペース */
+  margin-top: 15px;
+}
+
+/* 検索フォームの個別の体裁（子要素） */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 180px;
+}
+
+.text-input, .select-input {
+  font-size: 14px;
+  padding: 5px;
+  min-width: 160px;
+}
+
+/* 検索結果(search-results)の体裁 */
+/* search/_results.html.erb記述 */
+.search-results {
+  margin-top: 20px;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  font-size: 14px;
+}
+.search-results ul {
+  list-style: none;
+  padding-left: 0;
+}
+.search-results li {
+  margin-bottom: 8px;
+}
+
+.search-results table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.search-results th,
+.search-results td {
+  border-bottom: 1px solid #ccc;
+  padding: 20px 16px; /* ← 横の余白を広くする */
+  text-align: left;
+  white-space: nowrap;
+}
+
+.search-results th {
+  background-color: #f8f8f8;
+  font-weight: bold;
+}
+
+.edit-button {
+  background-color: #f4a261;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.edit-button:hover {
+  background-color: #e76f51;
+}
+
+</style>
+
+<script>
+// ページ読み込み時：アンカーリンクがある場合はtextareaにフォーカス＋末尾移動
+document.addEventListener("DOMContentLoaded", function () {
+  const anchor = window.location.hash;
+  if (anchor) {
+    const textarea = document.querySelector(anchor);
+    if (textarea && textarea.tagName === "TEXTAREA") {
+      setTimeout(() => {
+        textarea.focus();
+        const len = textarea.value.length;
+        textarea.setSelectionRange(len, len);
+      }, 100);
+    }
+  }
+
+  // 検索結果の「編集」ボタン（同一ページ内ジャンプ用）
+  document.querySelectorAll('.edit-link').forEach(link => {
+    link.addEventListener("click", function (e) {
+      const targetId = this.getAttribute("href").substring(1);
+      const textarea = document.getElementById(targetId);
+      if (textarea) {
+        setTimeout(() => {
+          textarea.focus();
+          const length = textarea.value.length;
+          textarea.setSelectionRange(length, length);
+        }, 100);
+      }
+
+      // モーダルを閉じる
+      const modal = document.getElementById("search-modal");
+      if (modal) {
+        modal.classList.remove("show");
+        modal.classList.add("hidden");
+      }
+    });
+  });
+});
+</script>

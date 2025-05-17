@@ -1,0 +1,83 @@
+<turbo-frame id="search_results">
+  <div class="search-results">
+    <% if defined?(results) && results.present? %>
+      <table>
+        <thead>
+          <tr>
+            <th>結果</th>
+            <th>場所</th>
+            <th>詳細</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% results.each do |result| %>
+            <%# ---モデル先を指定　"StoryMap" or "Character"--- %>
+            <% model_type = result.class.name %>
+
+            <% keyword = params[:q].to_s %>
+
+            <%# 検索結果の格納場所の事前準備 %>
+            <% matched_field = nil %>   <%# 検索した文字の表示 %>
+            <% location_label = nil %>  <%# 検索したコントローラの場所 %>
+            <% detail_label = nil %>    <%# 検索したカラム名 %>
+
+            <%# リンク先の準備 「edit_link」 = edit path + その他オプション %>
+            <% edit_path = nil %>
+            <% edit_link = nil %>
+
+            <% case model_type
+              when "StoryMap"
+                location_label = "物語の概要"
+                content = case
+                  when result.summary.to_s.include?(keyword)
+                    { matched: result.summary, detail: "要約", anchor: "#storymap-summary" }
+                  when result.description.to_s.include?(keyword)
+                    { matched: result.description, detail: "詳細な説明", anchor: "#storymap-description" }
+                end
+                if content
+                  matched_field = content[:matched]
+                  detail_label = content[:detail]
+                  edit_path = comic_story_maps_path(result.comic) + content[:anchor]
+                end
+
+              when "Character"
+                location_label = "キャラクター"
+                content = case
+                  when result.name.to_s.include?(keyword)
+                    { matched: result.name, detail: "キャラクター名", anchor: "#character-name" }
+                  when result.description.to_s.include?(keyword)
+                    { matched: result.description, detail: "キャラ説明", anchor: "#character-description" }
+                end
+                if content
+                  matched_field = content[:matched]
+                  detail_label = content[:detail]
+                  edit_path = comic_characters_path(result.comic) + content[:anchor]
+                end
+            end %>
+
+            <% if matched_field.present? %>
+              <tr>-
+                <%# ---検索結果の表示-- %>
+                <td><%= matched_field.to_s.truncate(20) %></td>
+                <td><%= location_label %></td>
+                <td><%= detail_label %></td>
+                <td>
+                  <%# ---リンク先設定（turboをOFFにする + カーソルを末尾に設定）-- %>
+                  <% if edit_path.present? %>
+                    <%= link_to "編集", edit_path, class: "edit-link", data: { turbo: false }, onclick: "toggleSearchForm()" %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+
+        </tbody>
+      </table>
+
+    <% else %>
+      <p>一致する結果はありませんでした。</p>
+    <% end %>
+    
+  </div>
+</turbo-frame>

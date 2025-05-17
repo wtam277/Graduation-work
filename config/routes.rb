@@ -1,14 +1,22 @@
 Rails.application.routes.draw do
+  get "search/index"
   get "relationship_groups/index"
   resources :works
   resource :user, only: [:edit, :update]
-  devise_for :users
+
+  devise_for :users, controllers: {
+    omniauth_callbacks: 'users/omniauth_callbacks'
+  }
+
   root "home#index"
   get "/works", to: "works#index"
 
-
-  
   resources :comics, controller: "works" do
+
+    collection do
+      get :search, to: "search#index", as: :search
+    end
+
     resources :story_maps, only: [:index, :create, :update] 
     resources :story_parts, only: [:index, :create, :update, :destroy] 
     resources :characters, only: [:index, :new, :create, :update, :edit, :destroy]

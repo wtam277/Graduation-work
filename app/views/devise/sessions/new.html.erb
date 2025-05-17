@@ -23,4 +23,9 @@
   </div>
 <% end %>
 
+<div class="oauth-login" style="margin-top: 20px;">
+  <p>または</p>
+  <%= link_to "Googleでログイン", user_google_oauth2_omniauth_authorize_path, class: "btn-google" %>
+</div>
+
 <%= render "devise/shared/links" %>

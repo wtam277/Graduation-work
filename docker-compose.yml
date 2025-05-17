@@ -18,6 +18,8 @@ services:
       #BUNDLE_PATH: /rails/vendor/bundle
       BUNDLE_DEPLOYMENT: "false"
       BUNDLE_FROZEN: "false"
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
   db:
     image: postgres:14
     environment:

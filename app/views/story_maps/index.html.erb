@@ -3,12 +3,13 @@
 
 <%= form_with(model: @story_map, url: [@comic, @story_map], local: true) do |f| %>
   <div>
-    <%= f.text_area :summary, rows: 4, cols: 50 %>
+    <%# idは、検索してページのフォームに飛べるように設定している %>
+    <%= f.text_area :summary, id: "storymap-summary", rows: 4, cols: 50 %>
   </div>
 
   <div>
     <%= f.label :description, "詳細な説明" %>
-    <%= f.text_area :description, rows: 6, cols: 50 %>
+    <%= f.text_area :description, id: "storymap-description", rows: 6, cols: 50 %>
   </div>
   
   <div>

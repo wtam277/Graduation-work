@@ -68,3 +68,6 @@ gem "devise", "~> 4.9"
 gem "image_processing", "~> 1.12"
 gem 'dotenv-rails'
 gem 'acts_as_list'
+
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
