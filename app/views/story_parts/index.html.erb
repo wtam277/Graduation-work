@@ -13,7 +13,7 @@
 
       <!-- 入力フォーム -->
       <div class="story-part-input">
-        <%= text_area_tag "story_part[#{i}][content]", story_part&.content, rows: 4, cols: 50 %>
+        <%= text_area_tag "story_part[#{i}][content]", story_part&.content, { id: "storypart-content-#{i}", rows: 4, cols: 50 } %>
         <%= hidden_field_tag "story_part[#{i}][part_type]", i %>
       </div>
 

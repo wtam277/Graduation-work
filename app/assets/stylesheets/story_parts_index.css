@@ -65,3 +65,17 @@
     cursor: pointer;
     color: black;
   }
+
+  .note.highlight {
+    outline: 3px solid red;
+    animation: fadeBorder 2s ease-out;
+  }
+  
+  @keyframes fadeBorder {
+    0% {
+      outline-color: red;
+    }
+    100% {
+      outline-color: transparent;
+    }
+  }

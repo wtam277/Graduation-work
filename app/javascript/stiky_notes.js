@@ -29,6 +29,28 @@ document.addEventListener("turbo:load", function () {
       textArea.value = content;
       textArea.addEventListener("input", () => updateNoteContent(textArea));
       note.appendChild(textArea);
+    // 追記
+
+    setTimeout(() => {
+      const targetId = localStorage.getItem("focusTargetId");
+      if (!targetId) return;
+  
+      const note = document.getElementById(targetId);
+      const textarea = note?.querySelector("textarea");
+      if (textarea) {
+        textarea.focus();
+        const len = textarea.value.length;
+        textarea.setSelectionRange(len, len);
+  
+        note.classList.add("highlight");
+        setTimeout(() => {
+          note.classList.remove("highlight");
+        }, 2000);
+      }
+  
+      localStorage.removeItem("focusTargetId");
+    }, 300); // 少し長めに待つことでDOM構築のタイミングを確保
+    //
   
       makeNoteDraggable(note);
     });
@@ -43,7 +65,9 @@ document.addEventListener("turbo:load", function () {
       });
     });
   });
-  
+
+
+
   function getStikyNoteBasePath(comicId, notableType) {
     const pathType = notableType === "panel" ? "panels" : "story_parts";
     return `/comics/${comicId}/${pathType}/stiky_notes`;
@@ -180,6 +204,7 @@ document.addEventListener("turbo:load", function () {
     note.dataset.id = data.id;
     note.dataset.comicId = comicId;
     note.dataset.notableType = notableType;
+    note.id = `stikynote-${data.id}`; 
   
     const closeBtn = document.createElement("button");
     closeBtn.innerText = "×";

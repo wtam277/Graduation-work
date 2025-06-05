@@ -6,7 +6,8 @@
           <tr>
             <th>結果</th>
             <th>場所</th>
-            <th>詳細</th>
+            <th>詳細A</th>
+            <th>詳細B(キャラクター)</th>
             <th></th>
           </tr>
         </thead>
@@ -21,6 +22,7 @@
             <% matched_field = nil %>   <%# 検索した文字の表示 %>
             <% location_label = nil %>  <%# 検索したコントローラの場所 %>
             <% detail_label = nil %>    <%# 検索したカラム名 %>
+            <% detail_chara_label = nil %>    <%# 詳細Bのキャラクター %>
 
             <%# リンク先の準備 「edit_link」 = edit path + その他オプション %>
             <% edit_path = nil %>
@@ -29,39 +31,117 @@
             <% case model_type
               when "StoryMap"
                 location_label = "物語の概要"
-                content = case
+                hit = case
                   when result.summary.to_s.include?(keyword)
                     { matched: result.summary, detail: "要約", anchor: "#storymap-summary" }
                   when result.description.to_s.include?(keyword)
                     { matched: result.description, detail: "詳細な説明", anchor: "#storymap-description" }
                 end
-                if content
-                  matched_field = content[:matched]
-                  detail_label = content[:detail]
-                  edit_path = comic_story_maps_path(result.comic) + content[:anchor]
+                if hit
+                  matched_field = hit[:matched]
+                  detail_label = hit[:detail]
+                  edit_path = comic_story_maps_path(result.comic) + hit[:anchor]
+                end
+
+              when "StoryPart"
+                location_label = "起承転結"
+
+                # story_partのみ detial を reslt の type_part から引っ張ってくる構造　→ labelに代入
+                part_labels = ["起", "承", "転", "結"]
+                label = part_labels[result.part_type] rescue "不明" # rescueは保険
+
+                hit = case
+                  when result.content.to_s.include?(keyword)
+                    { matched: result.content, anchor: "#storypart-content-#{result.part_type}" }
+                end
+                if hit
+                  matched_field = hit[:matched]
+                  detail_label = label
+                  edit_path = comic_story_parts_path(result.comic) + hit[:anchor]
                 end
 
               when "Character"
                 location_label = "キャラクター"
-                content = case
+                hit = case
                   when result.name.to_s.include?(keyword)
                     { matched: result.name, detail: "キャラクター名", anchor: "#character-name" }
                   when result.description.to_s.include?(keyword)
                     { matched: result.description, detail: "キャラ説明", anchor: "#character-description" }
                 end
-                if content
-                  matched_field = content[:matched]
-                  detail_label = content[:detail]
-                  edit_path = comic_characters_path(result.comic) + content[:anchor]
+                if hit
+                  matched_field = hit[:matched]
+                  detail_label = hit[:detail]
+                  edit_path = comic_characters_path(result.comic) + hit[:anchor]
                 end
+              
+              #when "RelasionshipGroup"
+                #location_label = "簡易4コマ"
+                #hit = case
+                  #when result.name.to_s.include?(keyword)
+
+              when "Panel"
+                location_label = "簡易4コマ"
+                  # keyword に一致する speech を1件探す
+                  #panelのspeechを引っ張ってくる場合は、1件ずつfindして持ってこないといけない
+                hit_speech = result.speeches.find { |s| s.content.to_s.include?(keyword) }
+
+                if hit_speech
+                  matched_field = hit_speech.content
+                  detail_label = "#{result.position}コマ目"
+                  detail_chara_label = hit_speech.character&.name || "不明"
+                  edit_path = "#panel-position-#{result.position}" # ★スクロール用アンカーリンクに
+                end
+
+              when "Page"
+                location_label = "ページ"
+                hit = case
+                  when result.content.to_s.include?(keyword)
+                    { matched: result.content, detail: result.page_number, anchor: "#page-content-#{result.page_number}" }
+                end
+                if hit
+                  matched_field = hit[:matched]
+                  detail_label = hit[:detail]
+                  edit_path = comic_pages_path(result.comic) + hit[:anchor]
+                end
+
+              when "StikyNote"
+                location_label =
+                    case result.notable_type
+                      when "story_part"
+                        "付箋（起承転結）"
+                      when "panel"
+                        "付箋（簡易4コマ）"
+                      else
+                        "付箋（不明）"
+                      end
+                hit = case
+                  when result.note_content.to_s.include?(keyword)
+                  { matched: result.note_content, detail: "メモ", anchor: "#stikynote-#{result.id}" }
+                end
+                if hit
+                  matched_field = hit[:matched]
+                  detail_label = hit[:detail] 
+                  edit_path = 
+                    case result.notable_type
+                      when "story_part"
+                        comic_story_parts_path(result.comic) + hit[:anchor]
+                      when "panel"
+                        comic_panels_path(result.comic) + hit[:anchor]
+                      else
+                      nil
+                    end
+                end
+                
+
             end %>
 
             <% if matched_field.present? %>
-              <tr>-
+              <tr>
                 <%# ---検索結果の表示-- %>
                 <td><%= matched_field.to_s.truncate(20) %></td>
                 <td><%= location_label %></td>
                 <td><%= detail_label %></td>
+                <td><%= detail_chara_label %></td>
                 <td>
                   <%# ---リンク先設定（turboをOFFにする + カーソルを末尾に設定）-- %>
                   <% if edit_path.present? %>
@@ -78,6 +158,6 @@
     <% else %>
       <p>一致する結果はありませんでした。</p>
     <% end %>
-    
+
   </div>
 </turbo-frame>

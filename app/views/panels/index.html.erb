@@ -24,7 +24,8 @@
   <div class="storage-container">
     <% group.each do |position| %>
       <% panel = @comic.panels.find_by(position: position) %>
-      <div class="storage-box">
+      <!--  id panel-position で検索時にそれぞれのコマへ移動される -->
+      <div class="storage-box" id="panel-position-<%= position %>">
         <div class="position-number"><%= position %></div>
         <div class="panel-content">
           <% if panel.present? %>
@@ -78,7 +79,8 @@
   <div class="storage-container">
     <% group.each do |position| %>
       <% panel = @comic.panels.find_by(position: position) %>
-      <div class="storage-box">
+      <!--  id panel-position で検索時にそれぞれのコマへ移動される -->
+      <div class="storage-box" id="panel-position-<%= position %>">
         <div class="position-number"><%= position %></div>
         <div class="panel-content">
           <% if panel.present? %>
@@ -132,7 +134,8 @@
   <div class="storage-container">
     <% group.each do |position| %>
       <% panel = @comic.panels.find_by(position: position) %>
-      <div class="storage-box">
+      <!--  id panel-position で検索時にそれぞれのコマへ移動される -->
+      <div class="storage-box" id="panel-position-<%= position %>">
         <div class="position-number"><%= position %></div>
         <div class="panel-content">
           <% if panel.present? %>
@@ -186,7 +189,8 @@
   <div class="storage-container">
     <% group.each do |position| %>
       <% panel = @comic.panels.find_by(position: position) %>
-      <div class="storage-box">
+      <!--  id panel-position で検索時にそれぞれのコマへ移動される -->
+      <div class="storage-box" id="panel-position-<%= position %>">
         <div class="position-number"><%= position %></div>
         <div class="panel-content">
           <% if panel.present? %>

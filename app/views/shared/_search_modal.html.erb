@@ -16,7 +16,13 @@
           <%= f.select :location, options_for_select([
             ["すべて", "all"], 
             ["物語の概要", "story_map"], 
-            ["キャラクター", "character"]
+            ["起承転結", "story_part"],
+            ["キャラクター", "character"],
+            ["キャラ相関図","relationship_group"],
+            ["簡易4コマ","panel"],
+            ["ページ", "page"],
+            ["付箋（story_part）", "stiky_note_story_part"],
+            ["付箋（panel）", "stiky_note_panel"]
             ]), {}, class: "select-input" %>
         </div>
 
@@ -141,12 +147,14 @@
 document.addEventListener("DOMContentLoaded", function () {
   const anchor = window.location.hash;
   if (anchor) {
-    const textarea = document.querySelector(anchor);
-    if (textarea && textarea.tagName === "TEXTAREA") {
+    const noteElement = document.querySelector(anchor);
+    const textarea = noteElement?.querySelector("textarea");
+    if (textarea) {
       setTimeout(() => {
         textarea.focus();
         const len = textarea.value.length;
         textarea.setSelectionRange(len, len);
+        window.focusTargetId = null;
       }, 100);
     }
   }
@@ -155,7 +163,11 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll('.edit-link').forEach(link => {
     link.addEventListener("click", function (e) {
       const targetId = this.getAttribute("href").substring(1);
-      const textarea = document.getElementById(targetId);
+
+     localStorage.setItem("focusTargetId", targetId);
+
+      const noteElement = document.getElementById(targetId);
+      const textarea = noteElement?.querySelector("textarea");
       if (textarea) {
         setTimeout(() => {
           textarea.focus();

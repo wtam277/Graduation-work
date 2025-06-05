@@ -92,6 +92,20 @@
     cursor: pointer;
     color: black;
   }
+
+  .note.highlight {
+    outline: 3px solid red;
+    animation: fadeBorder 2s ease-out;
+  }
+  
+  @keyframes fadeBorder {
+    0% {
+      outline-color: red;
+    }
+    100% {
+      outline-color: transparent;
+    }
+  }
      /* characterの画像設定 */
      .rounded-full {
       border-radius: 50%; /* 画像を丸く表示 */

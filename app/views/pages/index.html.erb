@@ -5,7 +5,7 @@
     <div class="page-form">
       <div class="form-group">
         <span class="page-number"><%= i + 1 %></span>
-        <%= text_area_tag "pages[#{i}][content]", page.content, rows: 3, class: "content-textarea" %>
+        <%= text_area_tag "pages[#{i}][content]", page.content, rows: 3, id: "page-content-#{page.page_number}",class: "content-textarea" %>
         <%= hidden_field_tag "pages[#{i}][id]", page.id if page.persisted? %>
         <%= hidden_field_tag "pages[#{i}][page_number]", page.page_number %>
       </div>
